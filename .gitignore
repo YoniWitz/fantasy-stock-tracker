@@ -25,6 +25,7 @@ obj/
 Obj/
 
 # Visual Studio 2015 cache/options directory
+.vscode
 .vs/
 /wwwroot/dist/
 
@@ -179,6 +180,9 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+.DS_Store
+appsettings.json
+*.db
 
 /node_modules
 
