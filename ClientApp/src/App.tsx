@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import './custom.css'
 
-export default class App extends Component {
-  static displayName = App.name;
+ class App extends Component {
+  state = {
+    values:[]
+  }
+
+  componentDidMount(){
+    fetch("http://localhost:5001/holding")
+    .then(res => res.json())
+    .then(resJson => console.log(resJson))
+    .catch(err => console.log(err, "error fetching data"));
+  }
 
   render () {
     return (
@@ -12,3 +21,4 @@ export default class App extends Component {
     );
   }
 }
+export default App;
