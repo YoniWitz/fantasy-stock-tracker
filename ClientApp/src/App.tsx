@@ -7,16 +7,22 @@ import './custom.css'
   }
 
   componentDidMount(){
-    fetch("http://localhost:5001/holding")
+    fetch("http://localhost:5002/holdings")
     .then(res => res.json())
-    .then(resJson => console.log(resJson))
-    .catch(err => console.log(err, "error fetching data"));
+    .then(resJson =>this.setState({values:resJson}))
+    .catch(err => console.log(`${err}, error fetching data`));
   }
 
   render () {
     return (
       <div>
-      hello
+      <ul>
+        {this.state.values.map((value :any) => 
+          (
+            <li key={value.id}>{value.name}</li>
+          ))}
+      </ul>
+
       </div>
     );
   }
