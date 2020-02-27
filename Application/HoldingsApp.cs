@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyStockTracker.Application
 {
-    public class HoldingsApp
+    public class HoldingsApp : IHoldingsApp
     {
         private readonly DataContext _context;
         public HoldingsApp(DataContext context)
@@ -24,6 +26,33 @@ namespace FantasyStockTracker.Application
         {
             var holding = await _context.Holdings.FindAsync(id);
             return holding;
-        }       
+        }
+
+        public async Task<bool> PostHolding(Holding holding)
+        {
+            _context.Holdings.Add(holding);
+            var success = await _context.SaveChangesAsync() > 0;
+            if (success) return success;
+            else throw new Exception("Problem saving holding");
+        }
+
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            _disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
