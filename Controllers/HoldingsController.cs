@@ -40,5 +40,14 @@ namespace FantasyStockTracker.Controllers
             await _holdingsApp.PostHolding(holding);
             return CreatedAtAction(nameof(Get), new { id = holding.Id }, holding);
         }
+
+        //Put holdings/1
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Holding holding)
+        {
+            holding.Id = id;
+            await _holdingsApp.PutHolding(holding);
+            return NoContent();
+        }
     }
 }
