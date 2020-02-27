@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Models;
-using FantasyStockTracker.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FantasyStockTracker.Controllers
 {
@@ -12,34 +10,23 @@ namespace FantasyStockTracker.Controllers
     [Route("[controller]")]
     public class HoldingsController : ControllerBase
     {
-        public HoldingsController(DataContext context)
+        private readonly HoldingsApp _holdingsApp;
+
+        public HoldingsController(HoldingsApp holdingsApp)
         {
-            _context = context;
+            _holdingsApp = holdingsApp;
         }
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-      //  private readonly ILogger<HoldingController> _logger;
-        private readonly DataContext _context;
-
-        // public HoldingController(ILogger<HoldingController> logger)
-        // {
-        //     _logger = logger;
-        // }
-
-        [HttpGet]
+       [HttpGet]
         public async Task<ActionResult<IEnumerable<Holding>>> Get()
         {
-            var holdings = await _context.Holdings.ToListAsync();
+            var holdings = await _holdingsApp.GetHoldings();
             return Ok(holdings);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Holding>> Get(int id)
         {
-            var holding = await _context.Holdings.FindAsync();
+            var holding = await _holdingsApp.GetHolding(id);
             return Ok(holding);
         }
     }

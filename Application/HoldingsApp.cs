@@ -14,9 +14,16 @@ namespace FantasyStockTracker.Application
             _context = context;
         }
 
-        // public async Task<List<Holding>> getHoldings(){
-        //     var holdings = await _context.Holdings.ToListAsync();
-        //     return holdings;
-        // }
+        public async Task<List<Holding>> GetHoldings()
+        {
+            var holdings = await _context.Holdings.ToListAsync();
+            return holdings;
+        }
+
+        public async Task<Holding> GetHolding(int id)
+        {
+            var holding = await _context.Holdings.FindAsync(id);
+            return holding;
+        }       
     }
 }
