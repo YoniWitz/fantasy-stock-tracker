@@ -36,6 +36,20 @@ namespace FantasyStockTracker.Application
             else throw new Exception("Problem saving holding");
         }
 
+         public async Task<bool> PutHolding(Holding holding)
+        {
+           var currentHolding = await _context.Holdings.FindAsync(holding.Id);
+           if(currentHolding == null){
+               throw new Exception("Could not find holding");
+           }
+
+           currentHolding.Name = holding.Name ?? currentHolding.Name;
+           
+            var success = await _context.SaveChangesAsync() > 0;
+            if (success) return success;
+            else throw new Exception("Problem saving holding");
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)
