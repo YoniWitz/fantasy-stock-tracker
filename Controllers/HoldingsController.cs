@@ -16,18 +16,29 @@ namespace FantasyStockTracker.Controllers
         {
             _holdingsApp = holdingsApp;
         }
-       [HttpGet]
+
+        //Get holdings
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Holding>>> Get()
         {
             var holdings = await _holdingsApp.GetHoldings();
             return Ok(holdings);
         }
 
-        [HttpGet("{id}")]
+        //Get holdings/1
+        [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<Holding>> Get(int id)
         {
             var holding = await _holdingsApp.GetHolding(id);
             return Ok(holding);
+        }
+
+        //Post holdings
+        [HttpPost]
+        public async Task<ActionResult<Holding>> Post(Holding holding)
+        {
+            await _holdingsApp.PostHolding(holding);
+            return CreatedAtAction(nameof(Get), new { id = holding.Id }, holding);
         }
     }
 }

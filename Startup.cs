@@ -1,4 +1,5 @@
 using FantasyStockTracker.Application;
+using FantasyStockTracker.Application.interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
