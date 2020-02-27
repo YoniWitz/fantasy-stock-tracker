@@ -1,3 +1,4 @@
+using FantasyStockTracker.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -26,6 +27,7 @@ namespace FantasyStockTracker
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>{
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3001", "http://localhost:3000");
             }));
+            services.AddScoped<HoldingsApp>();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory

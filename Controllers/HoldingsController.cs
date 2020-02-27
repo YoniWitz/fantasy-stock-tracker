@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using FantasyStockTracker.Application;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace FantasyStockTracker.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HoldingController : ControllerBase
+    public class HoldingsController : ControllerBase
     {
-        public HoldingController(DataContext context)
+        public HoldingsController(DataContext context)
         {
             _context = context;
         }
@@ -38,7 +39,7 @@ namespace FantasyStockTracker.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Holding>> Get(int id)
         {
-            var holding = await _context.Holdings.FindAsync(id);
+            var holding = await _context.Holdings.FindAsync();
             return Ok(holding);
         }
     }
