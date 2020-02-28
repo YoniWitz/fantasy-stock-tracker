@@ -1,14 +1,13 @@
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+
+body {
+  background-color: rgb(234, 234, 234) !important;
 }
 
-code {
-  color: #E01A76;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+nav.navbar.navbar-expand.navbar-light {
+  background-image: linear-gradient(
+    135deg,
+    rgb(24, 42, 115) 0%,
+    rgb(33, 138, 174) 69%,
+    rgb(32, 167, 172) 89%
+  ) !important;
 }

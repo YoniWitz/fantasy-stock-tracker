@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './custom.css'
-import { IHolding } from '../models/IHolding';
-import { NavMenu } from '../../components/NavMenu';
-
-
+import React, { useState, useEffect, Fragment } from "react";
+import "./custom.css";
+import { IHolding } from "../models/IHolding";
+import { NavMenu } from "../../components/NavMenu";
+import { ListGroup, Container } from "react-bootstrap";
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -15,15 +14,16 @@ const App = () => {
       .catch(err => console.log(`${err}, error fetching data`));
   });
   return (
-    <div>
+    <Fragment>
       <NavMenu />
-      <ul>
-        {holdings.map(holdings =>
-          (
-            <li key={holdings.id}>{holdings.name}</li>
+      <Container style={{ marginTop: "60px" }}>
+        <ListGroup>
+          {holdings.map(holdings => (
+            <ListGroup.Item key={holdings.id}>{holdings.name}</ListGroup.Item>
           ))}
-      </ul>
-    </div>
+        </ListGroup>
+      </Container>
+    </Fragment>
   );
-}
+};
 export default App;
