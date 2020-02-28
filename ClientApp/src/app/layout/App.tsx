@@ -1,30 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './custom.css'
+import { IHolding } from '../models/IHolding';
 
- class App extends Component {
-  state = {
-    values:[]
-  }
 
-  componentDidMount(){
+const App = () => {
+  let [holdings, setHoldings] = useState<IHolding[]>([]);
+
+  useEffect(() => {
     fetch("http://localhost:5002/holdings")
-    .then(res => res.json())
-    .then(resJson =>this.setState({values:resJson}))
-    .catch(err => console.log(`${err}, error fetching data`));
-  }
-
-  render () {
-    return (
-      <div>
+      .then(res => res.json())
+      .then((resJson: IHolding[]) => setHoldings(resJson))
+      .catch(err => console.log(`${err}, error fetching data`));
+  });
+  return (
+    <div>
       <ul>
-        {this.state.values.map((value :any) => 
+        {holdings.map(holdings =>
           (
-            <li key={value.id}>{value.name}</li>
+            <li key={holdings.id}>{holdings.name}</li>
           ))}
       </ul>
-
-      </div>
-    );
-  }
+    </div>
+  );
 }
 export default App;
