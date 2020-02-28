@@ -10,6 +10,7 @@ namespace FantasyStockTracker.Application.interfaces
         Task<List<Holding>> GetHoldings();
         Task<Holding> GetHolding(int id);
         Task<bool> PostHolding(Holding holding);
-        Task<bool> PutHolding(Holding holding);
+        Task<Holding> PutHolding(Holding holding);
+        Task<bool> DeleteHolding(int id);
     }
 }

@@ -43,11 +43,23 @@ namespace FantasyStockTracker.Controllers
 
         //Put holdings/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Holding holding)
+        public async Task<ActionResult> Put(int id, Holding holding)
         {
             holding.Id = id;
-            await _holdingsApp.PutHolding(holding);
-            return NoContent();
+            var updatedHolding = await _holdingsApp.PutHolding(holding);
+            if (updatedHolding == null)
+                return NotFound();
+            return Ok(updatedHolding);
+        }
+
+        //Delete holdings/1
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var deleteSuccess = await _holdingsApp.DeleteHolding(id);
+            if (!deleteSuccess)
+                return NotFound();
+            return Ok();
         }
     }
 }
