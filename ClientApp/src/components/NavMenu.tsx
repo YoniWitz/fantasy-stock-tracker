@@ -6,10 +6,9 @@ export const NavMenu = () => {
     <Navbar bg="dark" fixed="top" variant="dark">
       <Container>
         <Navbar.Brand>FantasyStockTracker</Navbar.Brand>
-        <Nav color="white" className="mr-auto" navbar>
+        <Nav className="mr-auto" navbar>
           <Nav.Link>Home </Nav.Link>
-          <Nav.Link>Counter</Nav.Link>
-          <Nav.Link>Fetch data</Nav.Link>
+          <Nav.Link>Details</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
