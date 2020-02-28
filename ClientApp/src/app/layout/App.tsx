@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './custom.css'
 import { IHolding } from '../models/IHolding';
+import { NavMenu } from '../../components/NavMenu';
+
 
 
 const App = () => {
@@ -14,6 +16,7 @@ const App = () => {
   });
   return (
     <div>
+      <NavMenu />
       <ul>
         {holdings.map(holdings =>
           (
