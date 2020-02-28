@@ -2,7 +2,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import "./custom.css";
 import { IHolding } from "../models/IHolding";
 import { NavMenu } from "../../components/NavMenu";
-import { ListGroup, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import {HoldingDashboard} from '../../components/holdings/dashboard/HoldingDashboard'
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -17,11 +18,7 @@ const App = () => {
     <Fragment>
       <NavMenu />
       <Container style={{ marginTop: "60px" }}>
-        <ListGroup>
-          {holdings.map(holdings => (
-            <ListGroup.Item key={holdings.id}>{holdings.name}</ListGroup.Item>
-          ))}
-        </ListGroup>
+       <HoldingDashboard holdings={holdings} />
       </Container>
     </Fragment>
   );
