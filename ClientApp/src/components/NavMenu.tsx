@@ -3,7 +3,7 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 
 export const NavMenu = () => {
   return (
-    <Navbar className="fixed-top">
+    <Navbar fixed='top'>
       <Container>
         <Navbar.Brand>Fantasy Stock Tracker</Navbar.Brand>
         <Nav className="mr-auto" navbar>
