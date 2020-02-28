@@ -19,37 +19,37 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Holding>>> Get()
+        public async Task<ActionResult<IEnumerable<HoldingDTO>>> Get()
         {
-            var holdings = await _holdingsApp.GetHoldings();
-            return Ok(holdings);
+            var holdingDTOs = await _holdingsApp.GetHoldings();
+            return Ok(holdingDTOs);
         }
 
         //Get holdings/1
         [HttpGet("{id}", Name = "Get")]
-        public async Task<ActionResult<Holding>> Get(int id)
+        public async Task<ActionResult<HoldingDTO>> Get(int id)
         {
-            var holding = await _holdingsApp.GetHolding(id);
-            return Ok(holding);
+            var holdingDTO = await _holdingsApp.GetHolding(id);
+            return Ok(holdingDTO);
         }
 
         //Post holdings
         [HttpPost]
-        public async Task<ActionResult<Holding>> Post(Holding holding)
+        public async Task<ActionResult> Post(HoldingDTO holdingDTO)
         {
-            await _holdingsApp.PostHolding(holding);
-            return CreatedAtAction(nameof(Get), new { id = holding.Id }, holding);
+            var id = await _holdingsApp.PostHolding(holdingDTO);
+            return CreatedAtAction(nameof(Get), new { id = id}, holdingDTO);
         }
 
         //Put holdings/1
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, Holding holding)
+        public async Task<ActionResult> Put(int id, HoldingDTO holdingDTO)
         {
-            holding.Id = id;
-            var updatedHolding = await _holdingsApp.PutHolding(holding);
-            if (updatedHolding == null)
+            holdingDTO.Id = id;
+            var updatedHoldingDTO = await _holdingsApp.PutHolding(holdingDTO);
+            if (updatedHoldingDTO == null)
                 return NotFound();
-            return Ok(updatedHolding);
+            return Ok(updatedHoldingDTO);
         }
 
         //Delete holdings/1
