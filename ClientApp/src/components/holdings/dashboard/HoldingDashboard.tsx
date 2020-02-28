@@ -1,6 +1,8 @@
 import React from "react";
 import { IHolding } from "../../../app/models/IHolding";
-import { Row, Col, ListGroup } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
+import { HoldingList } from "./HoldingList";
+import { HoldingDetails } from "../details/HoldingDetails";
 
 interface IProps {
   holdings: IHolding[];
@@ -9,13 +11,11 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
   return (
     <Row>
       <Col>
-        <ListGroup>
-          {holdings.map(holdings => (
-            <ListGroup.Item key={holdings.id}>{holdings.name}</ListGroup.Item>
-          ))}
-        </ListGroup>
+        <HoldingList holdings={holdings} />
       </Col>
-      <Col lg="4"></Col>
+      <Col lg="4">
+          <HoldingDetails />
+      </Col>
     </Row>
   );
 };
