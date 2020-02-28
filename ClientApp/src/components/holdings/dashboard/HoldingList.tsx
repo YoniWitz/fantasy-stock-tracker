@@ -10,7 +10,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings }) => {
   return (
     <ul>
       {holdings.map(holding => (
-        <Media key={holding.id} as="li">
+        <Media key={holding.id} as="li" className="border-bottom border-primary rounded" style={{backgroundColor:'white', padding:'4px'}}>
           <img
             width={64}
             height={64}
@@ -26,7 +26,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings }) => {
               in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac
               nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
             </p>
-            <Button style={{ float: "right" }} color="blue">
+            <Button style={{margin:'5px', float: "right" }} color="blue">
               View
             </Button>
             <Badge pill variant="info">
