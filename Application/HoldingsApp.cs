@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
@@ -16,54 +17,57 @@ namespace FantasyStockTracker.Application
             _context = context;
         }
 
-        public async Task<List<Holding>> GetHoldings()
+        public async Task<List<HoldingDTO>> GetHoldings()
         {
-            var holdings = await _context.Holdings.ToListAsync();
-            return holdings;
+            var holdingDTO = await _context.Holdings.Select(x => HoldingToDTO(x)).ToListAsync();
+            return holdingDTO;
         }
 
-        public async Task<Holding> GetHolding(int id)
+        public async Task<HoldingDTO> GetHolding(int id)
         {
-            var holding = await _context.Holdings.FindAsync(id);
-            return holding;
+            var holdingDTO = await _context.Holdings.Where(x => x.Id == id).Select(x => HoldingToDTO(x)).SingleAsync();
+            return holdingDTO;
         }
 
-        public async Task<bool> PostHolding(Holding holding)
+        public async Task<int> PostHolding(HoldingDTO holdingDTO)
         {
+            var holding = new Holding
+            {
+                Name = holdingDTO.Name
+            };
+
             _context.Holdings.Add(holding);
             var success = await _context.SaveChangesAsync() > 0;
-            if (success) return success;
+            if (success) return holding.Id;
             else throw new Exception("Problem creating holding");
         }
 
-        public async Task<Holding> PutHolding(Holding holding)
+        public async Task<HoldingDTO> PutHolding(HoldingDTO holdingDTO)
         {
-            var currentHolding = await _context.Holdings.FindAsync(holding.Id);
+            var currentHolding = await _context.Holdings.FindAsync(holdingDTO.Id);
             if (currentHolding == null)
             {
                 return null;
             }
 
-            currentHolding.Name = holding.Name ?? currentHolding.Name;
+            currentHolding.Name = holdingDTO.Name ?? currentHolding.Name;
 
             var success = await _context.SaveChangesAsync() > 0;
-            if (success) return currentHolding;
+            if (success) return HoldingToDTO(currentHolding);
             else throw new Exception("Problem saving changes to holding");
         }
 
-         public async Task<bool> DeleteHolding(int id)
+        public async Task<bool> DeleteHolding(int id)
         {
             var holding = await _context.Holdings.FindAsync(id);
-            if(holding == null)
+            if (holding == null)
                 return false;
-            
+
             _context.Holdings.Remove(holding);
             var success = await _context.SaveChangesAsync() > 0;
-            if(success) return true;
+            if (success) return true;
             throw new Exception("error deleting holding");
-
         }
-
 
         private bool _disposed;
 
@@ -83,5 +87,12 @@ namespace FantasyStockTracker.Application
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        private static HoldingDTO HoldingToDTO(Holding holding) =>
+       new HoldingDTO
+       {
+           Id = holding.Id,
+           Name = holding.Name
+       };
     }
 }

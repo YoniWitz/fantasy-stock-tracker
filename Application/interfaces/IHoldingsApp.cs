@@ -7,10 +7,10 @@ namespace FantasyStockTracker.Application.interfaces
 {
     public interface IHoldingsApp : IDisposable
     {     
-        Task<List<Holding>> GetHoldings();
-        Task<Holding> GetHolding(int id);
-        Task<bool> PostHolding(Holding holding);
-        Task<Holding> PutHolding(Holding holding);
+        Task<List<HoldingDTO>> GetHoldings();
+        Task<HoldingDTO> GetHolding(int id);
+        Task<int> PostHolding(HoldingDTO holdingDTO);
+        Task<HoldingDTO> PutHolding(HoldingDTO holdingDTO);
         Task<bool> DeleteHolding(int id);
     }
 }
