@@ -7,7 +7,7 @@ interface IProps {
 
 export const HoldingDetails = () => {
   return (
-    <Card>
+    <Card border="primary">
       <Card.Img
         variant="top"
         src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
