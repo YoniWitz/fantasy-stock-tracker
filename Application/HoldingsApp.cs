@@ -33,22 +33,37 @@ namespace FantasyStockTracker.Application
             _context.Holdings.Add(holding);
             var success = await _context.SaveChangesAsync() > 0;
             if (success) return success;
-            else throw new Exception("Problem saving holding");
+            else throw new Exception("Problem creating holding");
         }
 
-         public async Task<bool> PutHolding(Holding holding)
+        public async Task<Holding> PutHolding(Holding holding)
         {
-           var currentHolding = await _context.Holdings.FindAsync(holding.Id);
-           if(currentHolding == null){
-               throw new Exception("Could not find holding");
-           }
+            var currentHolding = await _context.Holdings.FindAsync(holding.Id);
+            if (currentHolding == null)
+            {
+                return null;
+            }
 
-           currentHolding.Name = holding.Name ?? currentHolding.Name;
-           
+            currentHolding.Name = holding.Name ?? currentHolding.Name;
+
             var success = await _context.SaveChangesAsync() > 0;
-            if (success) return success;
-            else throw new Exception("Problem saving holding");
+            if (success) return currentHolding;
+            else throw new Exception("Problem saving changes to holding");
         }
+
+         public async Task<bool> DeleteHolding(int id)
+        {
+            var holding = await _context.Holdings.FindAsync(id);
+            if(holding == null)
+                return false;
+            
+            _context.Holdings.Remove(holding);
+            var success = await _context.SaveChangesAsync() > 0;
+            if(success) return true;
+            throw new Exception("error deleting holding");
+
+        }
+
 
         private bool _disposed;
 
