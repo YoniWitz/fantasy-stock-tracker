@@ -10,10 +10,10 @@ interface IProps {
 }
 export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
   let [selectedHolding, setSelectedHolding] = useState<IHolding | undefined>(undefined);
+  let [editMode, setEditMode] = useState<boolean>(false);
 
-  const selectHolding = (id:string | number) =>{
-    setSelectedHolding(holdings.find(holding => holding.id === id));
-  }
+  const handleEditMode = (isEditMode: boolean) => setEditMode(isEditMode);
+  const selectHolding = (id:string | number) => setSelectedHolding(holdings.find(holding => holding.id === id));
 
   return (
     <Row>
@@ -21,8 +21,8 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
         <HoldingList holdings={holdings} selectHolding={selectHolding} />
       </Col>
       <Col lg="4">
-          {selectedHolding && <HoldingDetails selectedHolding={selectedHolding}/>}
-          <HoldingForm/>
+          {selectedHolding && !editMode && <HoldingDetails selectedHolding={selectedHolding} handleEditMode={handleEditMode}/>}
+          {editMode && <HoldingForm/>}
       </Col>
     </Row>
   );
