@@ -1,11 +1,12 @@
 import React from "react";
 import { IHolding } from "../../../app/models/IHolding";
 import { Card, Button, Row, Col } from "react-bootstrap";
+
 interface IProps {
-  holding: IHolding;
+  selectedHolding: IHolding;
 }
 
-export const HoldingDetails = () => {
+export const HoldingDetails:React.FC<IProps> = ({selectedHolding}) => {
   return (
     <Card border="primary">
       <Card.Img
@@ -13,7 +14,7 @@ export const HoldingDetails = () => {
         src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
       />
       <Card.Body>
-        <Card.Title>name</Card.Title>
+        <Card.Title>{selectedHolding.name}</Card.Title>
         <Card.Text>
           Some quick example text to build on the card title and make up the
           bulk of the card's content.

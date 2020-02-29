@@ -4,9 +4,10 @@ import { IHolding } from "../../../app/models/IHolding";
 
 interface IProps {
   holdings: IHolding[];
+  selectHolding:(id: string | number) => void;
 }
 
-export const HoldingList: React.FC<IProps> = ({ holdings }) => {
+export const HoldingList: React.FC<IProps> = ({ holdings, selectHolding }) => {
   return (
     <ul>
       {holdings.map(holding => (
@@ -26,7 +27,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings }) => {
               in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac
               nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
             </p>
-            <Button style={{margin:'5px', float: "right" }} color="blue">
+            <Button style={{margin:'5px', float: "right" }} color="blue" onClick={() => selectHolding(holding.id)}>
               View
             </Button>
             <Badge pill variant="info">
