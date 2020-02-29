@@ -4,9 +4,10 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 
 interface IProps {
   selectedHolding: IHolding;
+  handleEditMode: (isEditMode: boolean) => void;
 }
 
-export const HoldingDetails:React.FC<IProps> = ({selectedHolding}) => {
+export const HoldingDetails:React.FC<IProps> = ({selectedHolding, handleEditMode}) => {
   return (
     <Card border="primary">
       <Card.Img
@@ -21,7 +22,7 @@ export const HoldingDetails:React.FC<IProps> = ({selectedHolding}) => {
         </Card.Text>
         <Row>
           <Col>
-            <Button>Sell</Button>
+            <Button onClick={() => {handleEditMode(true)}}>Sell</Button>
           </Col>
           <Col>
             <Button>Sell</Button>
