@@ -13,7 +13,7 @@ export const NavMenu = () => {
           <Nav.Link>Home</Nav.Link>
           <Nav.Link>
             <Button variant="primary" onClick={() => setShowModal(true)}>
-              Launch demo modal
+              Create Holding
             </Button>
             <Modal show={showModal} size="sm"
               aria-labelledby="example-modal-sizes-title-sm"
