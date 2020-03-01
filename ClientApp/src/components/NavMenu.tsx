@@ -18,7 +18,7 @@ export const NavMenu = () => {
             <Modal show={showModal} size="sm"
               aria-labelledby="example-modal-sizes-title-sm"
               centered>
-              <HoldingForm onCancelForm={setShowModal} />
+              <HoldingForm formHolding={undefined} onCancelForm={setShowModal} />
             </Modal>
           </Nav.Link>
         </Nav>
