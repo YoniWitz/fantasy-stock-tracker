@@ -5,10 +5,10 @@ import { Card, Button} from "react-bootstrap";
 interface IProps {
   selectedHolding: IHolding;
   setEditMode: (isEditMode: boolean) => void;
-  handleSelectHolding:(holding: number | string | null) => void;
+  handleSelectedHolding:(holding: number | string | undefined) => void;
 }
 
-export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectHolding }) => {
+export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectedHolding }) => {
   return (
     <Card border="primary">
       <Card.Img
@@ -22,7 +22,7 @@ export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode,
           bulk of the card's content.
         </Card.Text>
         <Button block onClick={() => { setEditMode(true) }}>Sell</Button>{' '}
-        <Button block onClick={() => handleSelectHolding(null)}>Cancel</Button>
+        <Button block onClick={() => handleSelectedHolding(undefined)}>Cancel</Button>
       </Card.Body>
     </Card>
   );

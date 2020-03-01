@@ -12,15 +12,15 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
   let [selectedHolding, setSelectedHolding] = useState<IHolding | undefined>(undefined);
   let [editMode, setEditMode] = useState<boolean>(false);
 
-  const handleSelectHolding = (id: string | number | null) => setSelectedHolding(holdings.find(holding => holding.id === id));
+  const handleSelectedHolding = (id: string | number | undefined) => setSelectedHolding(holdings.find(holding => holding.id === id));
 
   return (
     <Row>
       <Col>
-        <HoldingList holdings={holdings} handleSelectHolding={handleSelectHolding} />
+        <HoldingList holdings={holdings} handleSelectHolding={handleSelectedHolding} />
       </Col>
       <Col lg="4">
-        {selectedHolding && !editMode && <HoldingDetails handleSelectHolding={handleSelectHolding} selectedHolding={selectedHolding} setEditMode={setEditMode} />}
+        {selectedHolding && !editMode && <HoldingDetails handleSelectedHolding={handleSelectedHolding} selectedHolding={selectedHolding} setEditMode={setEditMode} />}
         {editMode && <HoldingForm onCancelForm={setEditMode} />}
       </Col>
     </Row>
