@@ -21,7 +21,7 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
       </Col>
       <Col lg="4">
         {selectedHolding && !editMode && <HoldingDetails handleSelectedHolding={handleSelectedHolding} selectedHolding={selectedHolding} setEditMode={setEditMode} />}
-        {editMode && <HoldingForm onCancelForm={setEditMode} />}
+        {editMode && <HoldingForm formHolding={selectedHolding} onCancelForm={setEditMode} />}
       </Col>
     </Row>
   );

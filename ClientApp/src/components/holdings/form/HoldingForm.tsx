@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState, FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
+import { IHolding } from "../../../app/models/IHolding";
 
 interface IProps {
   onCancelForm: (isAlive: boolean) => void;
+  formHolding: IHolding | undefined;
 }
-export const HoldingForm: React.FC<IProps> = ({ onCancelForm }) => {
+export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding }) => {
+  const initHolding = () => {
+    if (formHolding)
+      return formHolding;
+    else {
+      return {
+        id: '',
+        name: ''
+      }
+    }
+  }
+  let [holding, setHolding] = useState<IHolding>(initHolding);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let { name, value } = event.currentTarget;
+    setHolding({ ...holding, [name]: value }); 
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(holding);
+  }
+
   return (
-    <Form className="border border-primary">
+    <Form className="border border-primary" onSubmit={handleSubmit}>
       <Form.Group>
         <Form.Label>Name</Form.Label>
-        <Form.Control type="text" placeholder="Enter Name" />
+        <Form.Control type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
       </Form.Group>
       <div className="mb-2">
         <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg">
