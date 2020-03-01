@@ -4,14 +4,14 @@ import { IHolding } from "../../../app/models/IHolding";
 
 interface IProps {
   holdings: IHolding[];
-  selectHolding:(id: string | number) => void;
+  handleSelectHolding: (id: string | number) => void;
 }
 
-export const HoldingList: React.FC<IProps> = ({ holdings, selectHolding }) => {
+export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding }) => {
   return (
     <ul>
       {holdings.map(holding => (
-        <Media key={holding.id} as="li" className="border-bottom border-primary rounded" style={{backgroundColor:'white', padding:'4px'}}>
+        <Media key={holding.id} as="li" className="border-bottom border-primary rounded" style={{ backgroundColor: 'white', padding: '4px' }}>
           <img
             width={64}
             height={64}
@@ -27,7 +27,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings, selectHolding }) => {
               in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac
               nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
             </p>
-            <Button style={{margin:'5px', float: "right" }} color="blue" onClick={() => selectHolding(holding.id)}>
+            <Button style={{ margin: '5px', float: "right" }} color="blue" onClick={() => handleSelectHolding(holding.id)}>
               View
             </Button>
             <Badge pill variant="info">

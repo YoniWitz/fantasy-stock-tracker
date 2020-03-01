@@ -1,13 +1,14 @@
 import React from "react";
 import { IHolding } from "../../../app/models/IHolding";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button} from "react-bootstrap";
 
 interface IProps {
   selectedHolding: IHolding;
-  handleEditMode: (isEditMode: boolean) => void;
+  setEditMode: (isEditMode: boolean) => void;
+  handleSelectedHolding:(holding: number | string | undefined) => void;
 }
 
-export const HoldingDetails:React.FC<IProps> = ({selectedHolding, handleEditMode}) => {
+export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectedHolding }) => {
   return (
     <Card border="primary">
       <Card.Img
@@ -20,14 +21,8 @@ export const HoldingDetails:React.FC<IProps> = ({selectedHolding, handleEditMode
           Some quick example text to build on the card title and make up the
           bulk of the card's content.
         </Card.Text>
-        <Row>
-          <Col>
-            <Button onClick={() => {handleEditMode(true)}}>Sell</Button>
-          </Col>
-          <Col>
-            <Button>Sell</Button>
-          </Col>
-        </Row>
+        <Button block onClick={() => { setEditMode(true) }}>Sell</Button>{' '}
+        <Button block onClick={() => handleSelectedHolding(undefined)}>Cancel</Button>
       </Card.Body>
     </Card>
   );
