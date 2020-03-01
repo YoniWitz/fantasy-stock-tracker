@@ -5,8 +5,6 @@ import { HoldingForm } from './holdings/form/HoldingForm';
 export const NavMenu = () => {
   let [showModal, setShowModal] = useState<boolean>(false);
 
-  let handleShowModal = (isShowModal: boolean) => setShowModal(isShowModal);
-
   return (
     <Navbar fixed='top'>
       <Container>
@@ -14,13 +12,13 @@ export const NavMenu = () => {
         <Nav className="mr-auto" navbar>
           <Nav.Link>Home</Nav.Link>
           <Nav.Link>
-            <Button variant="primary" onClick={() => handleShowModal(true)}>
+            <Button variant="primary" onClick={() => setShowModal(true)}>
               Launch demo modal
             </Button>
             <Modal show={showModal} size="sm"
               aria-labelledby="example-modal-sizes-title-sm"
               centered>
-              <HoldingForm onCancelForm={handleShowModal} />
+              <HoldingForm onCancelForm={setShowModal} />
             </Modal>
           </Nav.Link>
         </Nav>

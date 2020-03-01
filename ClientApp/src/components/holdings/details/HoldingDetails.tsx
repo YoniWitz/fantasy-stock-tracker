@@ -4,10 +4,11 @@ import { Card, Button} from "react-bootstrap";
 
 interface IProps {
   selectedHolding: IHolding;
-  handleEditMode: (isEditMode: boolean) => void;
+  setEditMode: (isEditMode: boolean) => void;
+  handleSelectHolding:(holding: number | string | null) => void;
 }
 
-export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, handleEditMode }) => {
+export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectHolding }) => {
   return (
     <Card border="primary">
       <Card.Img
@@ -20,8 +21,8 @@ export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, handleEditMo
           Some quick example text to build on the card title and make up the
           bulk of the card's content.
         </Card.Text>
-        <Button block onClick={() => { handleEditMode(true) }}>Sell</Button>{' '}
-        <Button block>Sell</Button>
+        <Button block onClick={() => { setEditMode(true) }}>Sell</Button>{' '}
+        <Button block onClick={() => handleSelectHolding(null)}>Cancel</Button>
       </Card.Body>
     </Card>
   );
