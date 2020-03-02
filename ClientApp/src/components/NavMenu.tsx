@@ -5,7 +5,7 @@ import { IHolding } from '../app/models/IHolding';
 
 interface IProps {
   handleCreateSubmit: (holding: IHolding) => void;
-  setSelectedHolding: (holding:IHolding) => void;
+  setSelectedHolding: (holding: IHolding) => void;
 }
 export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHolding }) => {
   let [showModal, setShowModal] = useState<boolean>(false);
@@ -22,9 +22,10 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
             </Button>
             <Modal show={showModal} size="sm" onHide={() => setShowModal(false)}
               aria-labelledby="example-modal-sizes-title-sm"
-              centered > <Modal.Header closeButton>
-              <Modal.Title>Create new Holding</Modal.Title>
-            </Modal.Header>
+              centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Create new Holding</Modal.Title>
+              </Modal.Header>
               <HoldingForm setSelectedHolding={setSelectedHolding} handleSubmit={handleCreateSubmit} formHolding={null} onCancelForm={setShowModal} />
             </Modal>
           </Nav.Link>
