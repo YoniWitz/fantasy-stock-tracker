@@ -10,8 +10,9 @@ interface IProps {
   handleEditSubmit: (holding: IHolding) => void;
   setSelectedHolding: (holding: IHolding) => void;
   selectedHolding: IHolding | null;
+  handleDeleteHolding: (id: string) => void;
 }
-export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit, setSelectedHolding, selectedHolding }) => {
+export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit, setSelectedHolding, selectedHolding, handleDeleteHolding }) => {
   let [editMode, setEditMode] = useState<boolean>(false);
 
   const handleSelectedHolding = (id: string | null) => {
@@ -22,7 +23,7 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit,
   return (
     <Row>
       <Col>
-        <HoldingList holdings={holdings} handleSelectHolding={handleSelectedHolding} />
+        <HoldingList handleDeleteHolding={handleDeleteHolding} holdings={holdings} handleSelectHolding={handleSelectedHolding} />
       </Col>
       <Col lg="4">
         {selectedHolding && !editMode && <HoldingDetails handleSelectedHolding={handleSelectedHolding} selectedHolding={selectedHolding} setEditMode={setEditMode} />}
