@@ -12,9 +12,12 @@ const App = () => {
   useEffect(() => {
     fetch("http://localhost:5002/holdings")
       .then(res => res.json())
-      .then((resJson: IHolding[]) => setHoldings(resJson))
+      .then((resJson: IHolding[]) => {
+        // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
+        setHoldings(resJson)
+      })
       .catch(err => console.log(`${err}, error fetching data`));
-  },[]);
+  }, []);
 
   let handleCreateSubmit = (newHolding: IHolding) => {
     setHoldings([...holdings, newHolding]);
