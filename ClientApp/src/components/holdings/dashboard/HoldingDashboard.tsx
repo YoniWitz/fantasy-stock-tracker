@@ -14,7 +14,10 @@ interface IProps {
 export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit, setSelectedHolding, selectedHolding }) => {
   let [editMode, setEditMode] = useState<boolean>(false);
 
-  const handleSelectedHolding = (id: string | null) => setSelectedHolding(holdings.filter(holding => holding.id === id)[0]);
+  const handleSelectedHolding = (id: string | null) => {
+    setSelectedHolding(holdings.filter(holding => holding.id === id)[0]);
+    setEditMode(false);
+  }
 
   return (
     <Row>
