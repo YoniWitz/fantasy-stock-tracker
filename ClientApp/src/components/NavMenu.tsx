@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Nav, Button, Modal } from 'react-bootstrap';
 import { HoldingForm } from './holdings/form/HoldingForm';
+import { IHolding } from '../app/models/IHolding';
 
-export const NavMenu = () => {
+interface IProps {
+  handleCreateSubmit: (holding: IHolding) => void;
+  setSelectedHolding: (holding: IHolding) => void;
+}
+export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHolding }) => {
   let [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -15,10 +20,13 @@ export const NavMenu = () => {
             <Button variant="primary" onClick={() => setShowModal(true)}>
               Create Holding
             </Button>
-            <Modal show={showModal} size="sm"
+            <Modal show={showModal} size="sm" onHide={() => setShowModal(false)}
               aria-labelledby="example-modal-sizes-title-sm"
               centered>
-              <HoldingForm formHolding={undefined} onCancelForm={setShowModal} />
+              <Modal.Header closeButton>
+                <Modal.Title>Create new Holding</Modal.Title>
+              </Modal.Header>
+              <HoldingForm setSelectedHolding={setSelectedHolding} handleSubmit={handleCreateSubmit} formHolding={null} onCancelForm={setShowModal} />
             </Modal>
           </Nav.Link>
         </Nav>

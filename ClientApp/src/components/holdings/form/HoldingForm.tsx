@@ -1,12 +1,15 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { IHolding } from "../../../app/models/IHolding";
+import { v4 as uuid } from 'uuid';
 
 interface IProps {
   onCancelForm: (isAlive: boolean) => void;
-  formHolding: IHolding | undefined;
+  formHolding: IHolding | null;
+  handleSubmit: (holding: IHolding) => void;
+  setSelectedHolding: (holding: IHolding) => void;
 }
-export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding }) => {
+export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handleSubmit, setSelectedHolding }) => {
   const initHolding = () => {
     if (formHolding)
       return formHolding;
@@ -21,16 +24,20 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding }) => 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = event.currentTarget;
-    setHolding({ ...holding, [name]: value }); 
+    setHolding({ ...holding, [name]: value });
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (holding.id.length === 0) holding.id = uuid();
     console.log(holding);
+    handleSubmit(holding);
+    onCancelForm(false);
+    setSelectedHolding(holding);
   }
 
   return (
-    <Form className="border border-primary" onSubmit={handleSubmit}>
+    <Form className="border border-primary" onSubmit={handleFormSubmit}>
       <Form.Group>
         <Form.Label>Name</Form.Label>
         <Form.Control type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
