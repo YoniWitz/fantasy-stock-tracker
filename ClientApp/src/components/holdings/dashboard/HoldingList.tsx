@@ -5,9 +5,10 @@ import { IHolding } from "../../../app/models/IHolding";
 interface IProps {
   holdings: IHolding[];
   handleSelectHolding: (id: string | null) => void;
+  handleDeleteHolding: (id: string) => void;
 }
 
-export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding }) => {
+export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, handleDeleteHolding }) => {
   return (
     <ul>
       {holdings.map(holding => (
@@ -22,9 +23,12 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding })
           <Media.Body>
             <h5>{holding.name}</h5>
             <p>
-           
+
             </p>
-            <Button style={{ margin: '5px', float: "right" }} color="blue" onClick={() => handleSelectHolding(holding.id)}>
+            <Button style={{ margin: '5px', float: "right" }} variant="danger"onClick={() => handleDeleteHolding(holding.id)}>
+              Delete
+            </Button>
+            <Button style={{ margin: '5px', float: "right" }} onClick={() => handleSelectHolding(holding.id)}>
               View
             </Button>
             <Badge pill variant="info">

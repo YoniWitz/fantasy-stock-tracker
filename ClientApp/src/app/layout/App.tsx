@@ -19,19 +19,17 @@ const App = () => {
       .catch(err => console.log(`${err}, error fetching data`));
   }, []);
 
-  let handleCreateSubmit = (newHolding: IHolding) => {
-    setHoldings([...holdings, newHolding]);
-  }
+  const handleDeleteHolding = (id: string) => setHoldings(holdings.filter(holding => holding.id !== id));
 
-  let handleEditSubmit = (editedHolding: IHolding) => {
-    setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), editedHolding]);
-  }
+  const handleCreateSubmit = (newHolding: IHolding) => setHoldings([...holdings, newHolding]);
+
+  const handleEditSubmit = (editedHolding: IHolding) => setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), editedHolding]);
 
   return (
     <Fragment>
       <NavMenu setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "60px" }}>
-        <HoldingDashboard selectedHolding={selectedHolding} setSelectedHolding={setSelectedHolding} handleEditSubmit={handleEditSubmit} holdings={holdings} />
+        <HoldingDashboard handleDeleteHolding={handleDeleteHolding} selectedHolding={selectedHolding} setSelectedHolding={setSelectedHolding} handleEditSubmit={handleEditSubmit} holdings={holdings} />
       </Container>
     </Fragment>
   );
