@@ -5,7 +5,7 @@ import { Card, Button} from "react-bootstrap";
 interface IProps {
   selectedHolding: IHolding;
   setEditMode: (isEditMode: boolean) => void;
-  handleSelectedHolding:(holding: number | string | undefined) => void;
+  handleSelectedHolding:(holding: string | null) => void;
 }
 
 export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectedHolding }) => {
@@ -18,12 +18,11 @@ export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode,
       <Card.Body>
         <Card.Title>{selectedHolding.name}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+         
         </Card.Text>
         <Button block onClick={() => { setEditMode(true) }}>Sell</Button>{' '}
-        <Button block onClick={() => handleSelectedHolding(undefined)}>Cancel</Button>
-      </Card.Body>
+        <Button block onClick={() => handleSelectedHolding(null)}>Cancel</Button>
+      </Card.Body> 
     </Card>
   );
 };

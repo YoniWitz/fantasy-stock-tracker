@@ -1,5 +1,4 @@
 export interface IHolding{
-    id:string | number;
+    id:string;
     name:string;
-
 }

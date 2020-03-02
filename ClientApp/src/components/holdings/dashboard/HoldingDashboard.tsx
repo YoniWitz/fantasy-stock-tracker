@@ -7,12 +7,14 @@ import { HoldingForm } from "../form/HoldingForm";
 
 interface IProps {
   holdings: IHolding[];
+  handleEditSubmit: (holding: IHolding) => void;
+  setSelectedHolding: (holding: IHolding) => void;
+  selectedHolding: IHolding | null;
 }
-export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
-  let [selectedHolding, setSelectedHolding] = useState<IHolding | undefined>(undefined);
+export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit, setSelectedHolding, selectedHolding }) => {
   let [editMode, setEditMode] = useState<boolean>(false);
 
-  const handleSelectedHolding = (id: string | number | undefined) => setSelectedHolding(holdings.find(holding => holding.id === id));
+  const handleSelectedHolding = (id: string | null) => setSelectedHolding(holdings.filter(holding => holding.id === id)[0]);
 
   return (
     <Row>
@@ -21,7 +23,7 @@ export const HoldingDashboard: React.FC<IProps> = ({ holdings }) => {
       </Col>
       <Col lg="4">
         {selectedHolding && !editMode && <HoldingDetails handleSelectedHolding={handleSelectedHolding} selectedHolding={selectedHolding} setEditMode={setEditMode} />}
-        {editMode && <HoldingForm formHolding={selectedHolding} onCancelForm={setEditMode} />}
+        {editMode && <HoldingForm setSelectedHolding={setSelectedHolding} handleSubmit={handleEditSubmit} formHolding={selectedHolding} onCancelForm={setEditMode} />}
       </Col>
     </Row>
   );
