@@ -22,22 +22,21 @@ const App = () => {
   const handleDeleteHolding = (id: string) => {
     axiosagent.HoldingsRequests.delete(id)
       .then(() =>
-        setHoldings(holdings.filter(holding => holding.id !== id))
-      )
+        setHoldings(holdings.filter(holding => holding.id !== id)))
       .catch(err => console.log(`${err}, error deleting holding`));
   }
 
   const handleCreateSubmit = (newHolding: IHolding) => {
     axiosagent.HoldingsRequests.create(newHolding)
-      .then(createdHoldingJson =>
-        setHoldings([...holdings, createdHoldingJson]))
+      .then(createdHolding =>
+        setHoldings([...holdings, createdHolding]))
       .catch(err => console.log(`${err}, error creating holding`));
   }
 
   const handleEditSubmit = (editedHolding: IHolding) => {
     axiosagent.HoldingsRequests.update(editedHolding.id, editedHolding)
-      .then(updatedHoldingJson =>
-        setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), updatedHoldingJson]))
+      .then(updatedHolding =>
+        setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), updatedHolding]))
       .catch(err => console.log(`${err}, error updating holding`));
   }
 
