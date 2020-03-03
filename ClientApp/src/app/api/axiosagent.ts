@@ -13,12 +13,12 @@ const requests = {
 
 const holdingsUrl = 'holdings';
 
-const Holdings = {
+const HoldingsRequests = {
     list: ():Promise<IHolding[]> => requests.get(holdingsUrl),
     details: (id: string):Promise<IHolding> => requests.get(`${holdingsUrl}/${id}`),
     update: (id: string, holding: IHolding):Promise<IHolding> => requests.put(`${holdingsUrl}/${id}`, holding),
-    create: (activity: IHolding):Promise<IHolding> => requests.post(holdingsUrl, activity),
+    create: (holding: IHolding):Promise<IHolding> => requests.post(holdingsUrl, holding),
     delete: (id: string) => axios.delete(`${holdingsUrl}/${id}`)
 }
 
-export default { Holdings };
+export default { HoldingsRequests };
