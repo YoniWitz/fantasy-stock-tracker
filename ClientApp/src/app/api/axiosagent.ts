@@ -14,10 +14,10 @@ const requests = {
 const holdingsUrl = 'holdings';
 
 const Holdings = {
-    list: () => requests.get(holdingsUrl),
-    details: (id: string) => requests.get(`${holdingsUrl}/${id}`),
-    update: (id: string, holding: IHolding) => requests.put(`${holdingsUrl}/${id}`, holding),
-    create: (activity: IHolding) => requests.post(holdingsUrl, activity),
+    list: ():Promise<IHolding[]> => requests.get(holdingsUrl),
+    details: (id: string):Promise<IHolding> => requests.get(`${holdingsUrl}/${id}`),
+    update: (id: string, holding: IHolding):Promise<IHolding> => requests.put(`${holdingsUrl}/${id}`, holding),
+    create: (activity: IHolding):Promise<IHolding> => requests.post(holdingsUrl, activity),
     delete: (id: string) => axios.delete(`${holdingsUrl}/${id}`)
 }
 
