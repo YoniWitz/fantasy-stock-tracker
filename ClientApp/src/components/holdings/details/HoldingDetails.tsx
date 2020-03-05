@@ -1,11 +1,11 @@
 import React from "react";
 import { IHolding } from "../../../app/models/IHolding";
-import { Card, Button} from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
 interface IProps {
   selectedHolding: IHolding;
   setEditMode: (isEditMode: boolean) => void;
-  handleSelectedHolding:(holding: string | null) => void;
+  handleSelectedHolding: (holding: string | null) => void;
 }
 
 export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode, handleSelectedHolding }) => {
@@ -18,11 +18,11 @@ export const HoldingDetails: React.FC<IProps> = ({ selectedHolding, setEditMode,
       <Card.Body>
         <Card.Title>{selectedHolding.name}</Card.Title>
         <Card.Text>
-         
+
         </Card.Text>
-        <Button block onClick={() => { setEditMode(true) }}>Sell</Button>{' '}
+        <Button block onClick={() => setEditMode(true)}>Sell</Button>{' '}
         <Button block onClick={() => handleSelectedHolding(null)}>Cancel</Button>
-      </Card.Body> 
+      </Card.Body>
     </Card>
   );
 };
