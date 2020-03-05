@@ -33,7 +33,7 @@ const App = () => {
 
   const handleEditSubmit = (editedHolding: IHolding) => {
     axiosagent.HoldingsRequests.update(editedHolding.id, editedHolding)
-      .then(updatedHolding => setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), updatedHolding]))
+      .then(updatedHolding => setHoldings([...holdings.filter(holding => holding.id !== updatedHolding.id), updatedHolding]))
       .catch(err => console.log(`${err}, error updating holding`));
   }
 

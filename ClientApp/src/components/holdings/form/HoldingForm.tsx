@@ -27,7 +27,7 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     setHolding({ ...holding, [name]: value });
   }
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (holding.id.length === 0) holding.id = uuid();
     console.log(holding);
@@ -37,13 +37,13 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
   }
 
   return (
-    <Form className="border border-primary" onSubmit={handleFormSubmit}>
+    <Form className="border border-primary">
       <Form.Group>
         <Form.Label>Name</Form.Label>
         <Form.Control type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
       </Form.Group>
       <div className="mb-2">
-        <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg">
+        <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleFormSubmit}>
           Submit
         </Button>{' '}
         <Button onClick={() => onCancelForm(false)} style={{ float: 'right' }} variant="secondary" size="lg">
