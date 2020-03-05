@@ -47,13 +47,15 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
         <Form.Control type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
       </Form.Group>
       {spinning ?
-        <Spinner
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-        />
+        <div className="d-flex justify-content-center">
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+        </div>
         :
         <div className="mb-2">
           <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleFormSubmit}>

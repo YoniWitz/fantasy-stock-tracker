@@ -55,7 +55,7 @@ const App = () => {
       <Container style={{ marginTop: "60px" }}>
         {
           spinning ?
-            (<Spinning content='Loading Holdings' />)
+            <Spinning content='Loading Holdings' />
             :
             <HoldingDashboard handleDeleteHolding={handleDeleteHolding} selectedHolding={selectedHolding} setSelectedHolding={setSelectedHolding} handleEditSubmit={handleEditSubmit} holdings={holdings} />
         }
