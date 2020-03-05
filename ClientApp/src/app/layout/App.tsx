@@ -11,19 +11,31 @@ const App = () => {
   let [selectedHolding, setSelectedHolding] = useState<IHolding | null>(null);
 
   useEffect(() => {
-    axiosagent.Holdings.list()     
-      .then((resJson: IHolding[]) => {
-      // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
-      setHoldings(resJson)
-    })
-      .catch(err => console.log(`${err}, error fetching data`));
+    axiosagent.HoldingsRequests.list()
+      .then(holdingsJson =>
+        // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
+        setHoldings(holdingsJson)
+      )
+      .catch(err => console.log(`${err}, error fetching holdings`));
   }, []);
 
-  const handleDeleteHolding = (id: string) => setHoldings(holdings.filter(holding => holding.id !== id));
+  const handleDeleteHolding = (id: string) => {
+    axiosagent.HoldingsRequests.delete(id)
+      .then(() => setHoldings(holdings.filter(holding => holding.id !== id)))
+      .catch(err => console.log(`${err}, error deleting holding`));
+  }
 
-  const handleCreateSubmit = (newHolding: IHolding) => setHoldings([...holdings, newHolding]);
+  const handleCreateSubmit = (newHolding: IHolding) => {
+    axiosagent.HoldingsRequests.create(newHolding)
+      .then(createdHolding => setHoldings([...holdings, createdHolding]))
+      .catch(err => console.log(`${err}, error creating holding`));
+  }
 
-  const handleEditSubmit = (editedHolding: IHolding) => setHoldings([...holdings.filter(holding => holding.id !== editedHolding.id), editedHolding]);
+  const handleEditSubmit = (editedHolding: IHolding) => {
+    axiosagent.HoldingsRequests.update(editedHolding.id, editedHolding)
+      .then(updatedHolding => setHoldings([...holdings.filter(holding => holding.id !== updatedHolding.id), updatedHolding]))
+      .catch(err => console.log(`${err}, error updating holding`));
+  }
 
   return (
     <Fragment>

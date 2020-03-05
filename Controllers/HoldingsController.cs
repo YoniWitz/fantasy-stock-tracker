@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Models;
@@ -27,7 +28,7 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings/1
         [HttpGet("{id}", Name = "Get")]
-        public async Task<ActionResult<HoldingDTO>> Get(int id)
+        public async Task<ActionResult<HoldingDTO>> Get(Guid id)
         {
             var holdingDTO = await _holdingsApp.GetHolding(id);
             return Ok(holdingDTO);
@@ -43,7 +44,7 @@ namespace FantasyStockTracker.Controllers
 
         //Put holdings/1
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, HoldingDTO holdingDTO)
+        public async Task<ActionResult> Put(Guid id, HoldingDTO holdingDTO)
         {
             holdingDTO.Id = id;
             var updatedHoldingDTO = await _holdingsApp.PutHolding(holdingDTO);
@@ -54,7 +55,7 @@ namespace FantasyStockTracker.Controllers
 
         //Delete holdings/1
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
             var deleteSuccess = await _holdingsApp.DeleteHolding(id);
             if (!deleteSuccess)

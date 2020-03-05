@@ -23,16 +23,17 @@ namespace FantasyStockTracker.Application
             return holdingDTO;
         }
 
-        public async Task<HoldingDTO> GetHolding(int id)
+        public async Task<HoldingDTO> GetHolding(Guid id)
         {
             var holdingDTO = await _context.Holdings.Where(x => x.Id == id).Select(x => HoldingToDTO(x)).SingleAsync();
             return holdingDTO;
         }
 
-        public async Task<int> PostHolding(HoldingDTO holdingDTO)
+        public async Task<Guid> PostHolding(HoldingDTO holdingDTO)
         {
             var holding = new Holding
             {
+                Id = holdingDTO.Id,
                 Name = holdingDTO.Name
             };
 
@@ -57,7 +58,7 @@ namespace FantasyStockTracker.Application
             else throw new Exception("Problem saving changes to holding");
         }
 
-        public async Task<bool> DeleteHolding(int id)
+        public async Task<bool> DeleteHolding(Guid id)
         {
             var holding = await _context.Holdings.FindAsync(id);
             if (holding == null)
