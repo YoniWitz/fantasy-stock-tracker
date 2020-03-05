@@ -7,10 +7,10 @@ import { HoldingForm } from "../form/HoldingForm";
 
 interface IProps {
   holdings: IHolding[];
-  handleEditSubmit: (holding: IHolding) => void;
+  handleEditSubmit: (holding: IHolding) => Promise<unknown>;
   setSelectedHolding: (holding: IHolding) => void;
   selectedHolding: IHolding | null;
-  handleDeleteHolding: (id: string) => void;
+  handleDeleteHolding: (id: string) => Promise<unknown>;
 }
 export const HoldingDashboard: React.FC<IProps> = ({ holdings, handleEditSubmit, setSelectedHolding, selectedHolding, handleDeleteHolding }) => {
   let [editMode, setEditMode] = useState<boolean>(false);

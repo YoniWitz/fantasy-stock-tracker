@@ -1,14 +1,21 @@
-import React from "react";
-import { Media, Button, Badge } from "react-bootstrap";
+import React, { useState } from "react";
+import { Media, Button, Badge, Spinner } from "react-bootstrap";
 import { IHolding } from "../../../app/models/IHolding";
 
 interface IProps {
   holdings: IHolding[];
   handleSelectHolding: (id: string | null) => void;
-  handleDeleteHolding: (id: string) => void;
+  handleDeleteHolding: (id: string) => Promise<unknown>;
 }
 
 export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, handleDeleteHolding }) => {
+  let [spinning, setSpinning] = useState<boolean>(false);
+
+  const handleDeleteButton = (id: string) => {
+    setSpinning(true);
+    handleDeleteHolding(id)
+      .then(() => setSpinning(false));
+  }
   return (
     <ul>
       {holdings.map(holding => (
@@ -25,8 +32,16 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
             <p>
 
             </p>
-            <Button style={{ margin: '5px', float: "right" }} variant="danger"onClick={() => handleDeleteHolding(holding.id)}>
-              Delete
+            <Button style={{ margin: '5px', float: "right" }} variant="danger" onClick={() => handleDeleteButton(holding.id)}>
+              {spinning ?
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                : 'Delete'}
             </Button>
             <Button style={{ margin: '5px', float: "right" }} onClick={() => handleSelectHolding(holding.id)}>
               View

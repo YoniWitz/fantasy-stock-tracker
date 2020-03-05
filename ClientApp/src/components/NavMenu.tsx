@@ -4,7 +4,7 @@ import { HoldingForm } from './holdings/form/HoldingForm';
 import { IHolding } from '../app/models/IHolding';
 
 interface IProps {
-  handleCreateSubmit: (holding: IHolding) => void;
+  handleCreateSubmit: (holding: IHolding) => Promise<unknown>;
   setSelectedHolding: (holding: IHolding) => void;
 }
 export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHolding }) => {
