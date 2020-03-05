@@ -9,12 +9,13 @@ interface IProps {
 }
 
 export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, handleDeleteHolding }) => {
-  let [spinning, setSpinning] = useState<boolean>(false);
+  let [target, setTarget] = useState<string>('');
 
   const handleDeleteButton = (id: string) => {
-    setSpinning(true);
+    setTarget(id);
     handleDeleteHolding(id)
-      .then(() => setSpinning(false));
+      .then(() => setTarget(''));
+      handleSelectHolding(null);
   }
   return (
     <ul>
@@ -33,7 +34,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
 
             </p>
             <Button style={{ margin: '5px', float: "right" }} variant="danger" onClick={() => handleDeleteButton(holding.id)}>
-              {spinning ?
+              {target === holding.id  ?
                 <Spinner
                   as="span"
                   animation="border"
