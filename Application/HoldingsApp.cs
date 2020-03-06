@@ -17,41 +17,41 @@ namespace FantasyStockTracker.Application
             _context = context;
         }
 
-        public async Task<List<HoldingDTO>> GetHoldings()
+        public async Task<List<HoldingDTO>> GetHoldingsDTOs()
         {
-            var holdingDTO = await _context.Holdings.Select(x => HoldingToDTO(x)).ToListAsync();
-            return holdingDTO;
+            var holdingsDTOs = await _context.Holdings.Select(x => HoldingToDTO(x)).ToListAsync();
+            return holdingsDTOs;
         }
 
-        public async Task<HoldingDTO> GetHolding(Guid id)
+        public async Task<HoldingDTO> GetHoldingDTO(Guid id)
         {
-            var holdingDTO = await _context.Holdings.Where(x => x.Id == id).Select(x => HoldingToDTO(x)).SingleAsync();
-            return holdingDTO;
+            var holdingDto = await _context.Holdings.Where(x => x.Id == id).Select(x => HoldingToDTO(x)).SingleAsync();
+            return holdingDto;
         }
 
-        public async Task<Guid> PostHolding(HoldingDTO holdingDTO)
+        public async Task<HoldingDTO> PostHoldingDTO(HoldingDTO holdingDto)
         {
             var holding = new Holding
             {
-                Id = holdingDTO.Id,
-                Name = holdingDTO.Name
+                Id = holdingDto.Id,
+                Name = holdingDto.Name
             };
 
             _context.Holdings.Add(holding);
             var success = await _context.SaveChangesAsync() > 0;
-            if (success) return holding.Id;
+            if (success) return HoldingToDTO(holding);
             else throw new Exception("Problem creating holding");
         }
 
-        public async Task<HoldingDTO> PutHolding(HoldingDTO holdingDTO)
+        public async Task<HoldingDTO> PutHoldingDTO(HoldingDTO holdingDto)
         {
-            var currentHolding = await _context.Holdings.FindAsync(holdingDTO.Id);
+            var currentHolding = await _context.Holdings.FindAsync(holdingDto.Id);
             if (currentHolding == null)
             {
                 return null;
             }
 
-            currentHolding.Name = holdingDTO.Name ?? currentHolding.Name;
+            currentHolding.Name = holdingDto.Name ?? currentHolding.Name;
 
             var success = await _context.SaveChangesAsync() > 0;
             if (success) return HoldingToDTO(currentHolding);
