@@ -55,11 +55,11 @@ const App = () => {
     <Fragment>
       <NavMenu setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "80px" }}>
-        <Route path='/' component={HomePage} />
+        <Route exact path='/' component={HomePage} />
         {spinning ? <Spinning content='Loading Holdings' /> :
           <Route path='/holdings' render=
-            {(props) =>
-              <HoldingDashboard {...props}
+            {() =>
+              <HoldingDashboard 
                 handleDeleteHolding={handleDeleteHolding}
                 selectedHolding={selectedHolding}
                 setSelectedHolding={setSelectedHolding}
