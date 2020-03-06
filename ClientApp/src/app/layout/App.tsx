@@ -6,6 +6,8 @@ import { Container } from "react-bootstrap";
 import { HoldingDashboard } from '../../components/holdings/dashboard/HoldingDashboard'
 import axiosagent from "../api/axiosagent";
 import { Spinning } from "./Spinning";
+import { Route } from "react-router-dom";
+import { HomePage } from "../../components/home/HomePage";
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -52,15 +54,21 @@ const App = () => {
   return (
     <Fragment>
       <NavMenu setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
-      <Container style={{ marginTop: "60px" }}>
-        {
-          spinning ?
-            <Spinning content='Loading Holdings' />
-            :
-            <HoldingDashboard handleDeleteHolding={handleDeleteHolding} selectedHolding={selectedHolding} setSelectedHolding={setSelectedHolding} handleEditSubmit={handleEditSubmit} holdings={holdings} />
-        }
+      <Container style={{ marginTop: "80px" }}>
+        <Route path='/' component={HomePage} />
+        {spinning ? <Spinning content='Loading Holdings' /> :
+          <Route path='/holdings' render=
+            {(props) =>
+              <HoldingDashboard {...props}
+                handleDeleteHolding={handleDeleteHolding}
+                selectedHolding={selectedHolding}
+                setSelectedHolding={setSelectedHolding}
+                handleEditSubmit={handleEditSubmit}
+                holdings={holdings} />}
+          />
+         } 
       </Container>
-    </Fragment>
+    </Fragment >
   );
 };
 export default App;
