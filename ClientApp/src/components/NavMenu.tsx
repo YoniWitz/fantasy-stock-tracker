@@ -11,11 +11,12 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
   let [showModal, setShowModal] = useState<boolean>(false);
 
   return (
-    <Navbar fixed='top'>
+    <Navbar sticky="top">
       <Container>
-        <Navbar.Brand>Fantasy Stock Tracker</Navbar.Brand>
-        <Nav className="mr-auto" navbar>
-          <Nav.Link>Home</Nav.Link>
+        <Navbar.Brand href="#home">Fantasy Stock Tracker</Navbar.Brand>
+        <Nav className="mr-auto">
+         
+          <Nav.Link href="/holdings">Holdings</Nav.Link>
           <Nav.Link>
             <Button variant="primary" onClick={() => setShowModal(true)}>
               Create Holding
