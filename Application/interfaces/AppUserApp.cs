@@ -30,10 +30,10 @@ namespace FantasyStockTracker.Application.interfaces
             return null;
         }
 
-        private static AppUserDTO AppUserToDTO(AppUser user) =>
+        private static AppUserDTO AppUserToDTO(AppUser appUser) =>
              new AppUserDTO
              {
-                 Email = user.Email
+                 Email = appUser.Email
              };
 
         private bool _disposed;
