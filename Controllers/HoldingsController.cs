@@ -22,35 +22,35 @@ namespace FantasyStockTracker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HoldingDTO>>> Get()
         {
-            var holdingDTOs = await _holdingsApp.GetHoldings();
-            return Ok(holdingDTOs);
+            var holdingsDTOs = await _holdingsApp.GetHoldingsDTOs();
+            return Ok(holdingsDTOs);
         }
 
         //Get holdings/1
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<HoldingDTO>> Get(Guid id)
         {
-            var holdingDTO = await _holdingsApp.GetHolding(id);
+            var holdingDTO = await _holdingsApp.GetHoldingDTO(id);
             return Ok(holdingDTO);
         }
 
         //Post holdings
         [HttpPost]
-        public async Task<ActionResult> Post(HoldingDTO holdingDTO)
+        public async Task<ActionResult> Post(HoldingDTO holdingDto)
         {
-            var id = await _holdingsApp.PostHolding(holdingDTO);
-            return CreatedAtAction(nameof(Get), new { id = id}, holdingDTO);
+            var createdHoldingDto = await _holdingsApp.PostHoldingDTO(holdingDto);
+            return CreatedAtAction(nameof(Get), new { id = createdHoldingDto.Id}, createdHoldingDto);
         }
 
         //Put holdings/1
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, HoldingDTO holdingDTO)
+        public async Task<ActionResult> Put(Guid id, HoldingDTO holdingDto)
         {
-            holdingDTO.Id = id;
-            var updatedHoldingDTO = await _holdingsApp.PutHolding(holdingDTO);
-            if (updatedHoldingDTO == null)
+            holdingDto.Id = id;
+            var updatedHoldingDto = await _holdingsApp.PutHoldingDTO(holdingDto);
+            if (updatedHoldingDto == null)
                 return NotFound();
-            return Ok(updatedHoldingDTO);
+            return Ok(updatedHoldingDto);
         }
 
         //Delete holdings/1
