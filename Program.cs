@@ -2,6 +2,7 @@ using System;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,14 +15,19 @@ namespace FantasyStockTracker
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            using (var scope=host.Services.CreateScope()){
+            using (var scope = host.Services.CreateScope())
+            {
                 var services = scope.ServiceProvider;
-                try{
-                    var context=services.GetRequiredService<DataContext>();
+                try
+                {
+                    var context = services.GetRequiredService<DataContext>();
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
+                    Seed.SeedData(userManager).Wait();
                 }
-                catch(Exception ex){
-                    var logger=services.GetRequiredService<ILogger<Program>>();
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occured during migration");
                 }
             }

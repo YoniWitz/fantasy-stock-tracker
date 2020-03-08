@@ -15,6 +15,7 @@ namespace FantasyStockTracker.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
              base.OnModelCreating(builder);
+             
             builder.Entity<Holding>()
             .HasData(
                 new Holding { Id = Guid.NewGuid(), Name = "Value 101" },
