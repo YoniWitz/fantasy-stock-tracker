@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyStockTracker.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class HoldingsController : ControllerBase
+    public class HoldingsController : BaseController
     {
         private readonly HoldingsApp _holdingsApp;
 
