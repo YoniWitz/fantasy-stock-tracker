@@ -1,11 +1,12 @@
 
 using System;
 using FantasyStockTracker.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyStockTracker.Persistence
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext(DbContextOptions options) : base(options) { }
 
@@ -13,6 +14,7 @@ namespace FantasyStockTracker.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+             base.OnModelCreating(builder);
             builder.Entity<Holding>()
             .HasData(
                 new Holding { Id = Guid.NewGuid(), Name = "Value 101" },
