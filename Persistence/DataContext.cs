@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FantasyStockTracker.Persistence
 {
-    public class DataContext : IdentityDbContext<AppUser>
+    public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions options) : base(options) { }
 

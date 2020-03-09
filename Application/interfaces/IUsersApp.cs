@@ -4,8 +4,8 @@ using FantasyStockTracker.Models.DTOs;
 
 namespace FantasyStockTracker.Application.interfaces
 {
-    public interface IAppUserApp : IDisposable
+    public interface IUsersApp : IDisposable
     {
-        Task<AppUserDTO> GetAppUserDTO(AppUserDTO appUserDTO);
+        Task<UserDTO> Login(UserDTO userDTO);
     }
 }

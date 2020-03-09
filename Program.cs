@@ -21,7 +21,7 @@ namespace FantasyStockTracker
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
-                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var userManager = services.GetRequiredService<UserManager<User>>();
                     context.Database.Migrate();
                     Seed.SeedData(userManager).Wait();
                 }
