@@ -8,17 +8,17 @@ namespace FantasyStockTracker.Controllers
 {
     public class UsersController : BaseController
     {
-        private readonly UsersApp _userApp;
+        private readonly UsersApp _usersApp;
 
-        public UsersController(UsersApp userApp)
+        public UsersController(UsersApp usersApp)
         {
-            _userApp = userApp;
+            _usersApp = usersApp;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(UserDTO userDTO)
         {
-            var loggedInUser = await _userApp.Login(userDTO);
+            var loggedInUser = await _usersApp.Login(userDTO);
             if (loggedInUser == null)
             {
                 return NotFound();
