@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FantasyStockTracker.Models
 {
-    public class AppUser:IdentityUser
+    public class User : IdentityUser
     {
-        public string DisplayName {get;set;}
+        public string DisplayName { get; set; }
     }
 }

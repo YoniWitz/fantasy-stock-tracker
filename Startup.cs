@@ -25,13 +25,15 @@ namespace FantasyStockTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Persistence.DataContext>(opt => 
+            services.AddDbContext<Persistence.DataContext>(opt =>
             opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>{
+
+            services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy =>
+            {
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3001", "http://localhost:3000");
             }));
             services.AddScoped<HoldingsApp>();
+             services.AddScoped<UsersApp>();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -40,10 +42,10 @@ namespace FantasyStockTracker
                 configuration.RootPath = "ClientApp/build";
             });
 
-             var builder = services.AddIdentityCore<AppUser>();
+            var builder = services.AddIdentityCore<User>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataContext>();
-            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            identityBuilder.AddSignInManager<SignInManager<User>>();
 
             services.AddAuthentication();
         }
