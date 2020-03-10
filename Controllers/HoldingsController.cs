@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FantasyStockTracker.Application;
+using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace FantasyStockTracker.Controllers
 {
     public class HoldingsController : BaseController
     {
-        private readonly HoldingsApp _holdingsApp;
+        private readonly IHoldingsApp _holdingsApp;
 
-        public HoldingsController(HoldingsApp holdingsApp)
+        public HoldingsController(IHoldingsApp holdingsApp)
         {
             _holdingsApp = holdingsApp;
         }

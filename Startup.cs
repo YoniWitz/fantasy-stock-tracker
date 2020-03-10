@@ -1,5 +1,6 @@
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
+using FantasyStockTracker.Infrasctructure.Security;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -32,8 +33,9 @@ namespace FantasyStockTracker
             {
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3001", "http://localhost:3000");
             }));
-            services.AddScoped<HoldingsApp>();
-             services.AddScoped<UsersApp>();
+            services.AddScoped<IHoldingsApp, HoldingsApp>();
+             services.AddScoped<IUsersApp, UsersApp>();
+             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
