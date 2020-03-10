@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using FantasyStockTracker.Application;
+using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,9 @@ namespace FantasyStockTracker.Controllers
 {
     public class UsersController : BaseController
     {
-        private readonly UsersApp _usersApp;
+        private readonly IUsersApp _usersApp;
 
-        public UsersController(UsersApp usersApp)
+        public UsersController(IUsersApp usersApp)
         {
             _usersApp = usersApp;
         }

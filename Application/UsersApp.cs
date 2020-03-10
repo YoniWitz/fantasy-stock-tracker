@@ -11,10 +11,12 @@ namespace FantasyStockTracker.Application
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public UsersApp(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IJwtGenerator _jwtGenerator;
+        public UsersApp(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<UserDTO> Login(UserDTO userDto)
@@ -28,7 +30,7 @@ namespace FantasyStockTracker.Application
                 return new UserDTO
                 {
                     DisplayName = user.DisplayName,
-                    Token = "this will be a token",
+                    Token = _jwtGenerator.CreateToken(user),
                     UserName = user.UserName,
                     Image = null
                 };
