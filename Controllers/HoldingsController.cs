@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyStockTracker.Controllers
@@ -20,10 +18,10 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings
         [HttpGet]
-        
+
         public async Task<ActionResult<IEnumerable<HoldingDTO>>> Get()
         {
-            var holdingsDTOs = await _holdingsApp.GetHoldingsDTOs();
+            var holdingsDTOs = await _holdingsApp.GetHoldings();
             return Ok(holdingsDTOs);
         }
 
@@ -31,27 +29,34 @@ namespace FantasyStockTracker.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<HoldingDTO>> Get(Guid id)
         {
-            var holdingDTO = await _holdingsApp.GetHoldingDTO(id);
+            var holdingDTO = await _holdingsApp.GetHolding(id);
+            if (holdingDTO == null)
+                return NotFound();
+
             return Ok(holdingDTO);
         }
 
         //Post holdings
         [HttpPost]
-        public async Task<ActionResult> Post(HoldingDTO holdingDto)
+        public async Task<ActionResult> Post(HoldingDTO holdingDTO)
         {
-            var createdHoldingDto = await _holdingsApp.PostHoldingDTO(holdingDto);
-            return CreatedAtAction(nameof(Get), new { id = createdHoldingDto.Id}, createdHoldingDto);
+            var createdHoldingDTO = await _holdingsApp.PostHolding(holdingDTO);
+
+            if (createdHoldingDTO == null) return BadRequest("Error creating new holding");
+            else return CreatedAtAction(nameof(Get), new { id = createdHoldingDTO.Id }, createdHoldingDTO);
         }
 
         //Put holdings/1
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, HoldingDTO holdingDto)
+        public async Task<ActionResult> Put(Guid id, HoldingDTO holdingDTO)
         {
-            holdingDto.Id = id;
-            var updatedHoldingDto = await _holdingsApp.PutHoldingDTO(holdingDto);
-            if (updatedHoldingDto == null)
-                return NotFound();
-            return Ok(updatedHoldingDto);
+            holdingDTO.Id = id;
+            var updatedHoldingDTO = await _holdingsApp.PutHolding(holdingDTO);
+
+            if (updatedHoldingDTO.Message != null)
+                return BadRequest(updatedHoldingDTO.Message);
+
+            return Ok(updatedHoldingDTO);
         }
 
         //Delete holdings/1
@@ -59,8 +64,10 @@ namespace FantasyStockTracker.Controllers
         public async Task<ActionResult> Delete(Guid id)
         {
             var deleteSuccess = await _holdingsApp.DeleteHolding(id);
+
             if (!deleteSuccess)
-                return NotFound();
+                return BadRequest("Error deleting holding");
+
             return Ok();
         }
     }
