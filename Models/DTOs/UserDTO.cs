@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FantasyStockTracker.Models.DTOs
@@ -9,6 +10,11 @@ namespace FantasyStockTracker.Models.DTOs
         public string Token { get; set; }
         public string UserName { get; set; }
 
-        public string Message {get;set;}
+        public List<string> Message { get; set; }
+
+        public UserDTO()
+        {
+            Message = new List<string>();
+        }
     }
 }

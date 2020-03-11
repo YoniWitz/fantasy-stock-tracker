@@ -35,7 +35,7 @@ namespace FantasyStockTracker.Controllers
         public async Task<ActionResult<UserDTO>> Register(UserRegisterDTO userRegisterDTO)
         {
             var registeredUserDTO = await _usersApp.Register(userRegisterDTO);
-            if (registeredUserDTO.Message != null)
+            if (registeredUserDTO.Message.Count > 0)
             {
                 return BadRequest(registeredUserDTO.Message);
             }
