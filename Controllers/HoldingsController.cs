@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyStockTracker.Controllers
@@ -19,6 +20,7 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<HoldingDTO>>> Get()
         {
             var holdingsDTOs = await _holdingsApp.GetHoldingsDTOs();
@@ -27,6 +29,7 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings/1
         [HttpGet("{id}", Name = "Get")]
+        [Authorize]
         public async Task<ActionResult<HoldingDTO>> Get(Guid id)
         {
             var holdingDTO = await _holdingsApp.GetHoldingDTO(id);

@@ -1,8 +1,10 @@
+using System.Text;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Infrasctructure.Security;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FantasyStockTracker
 {
@@ -34,8 +37,8 @@ namespace FantasyStockTracker
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3001", "http://localhost:3000");
             }));
             services.AddScoped<IHoldingsApp, HoldingsApp>();
-             services.AddScoped<IUsersApp, UsersApp>();
-             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUsersApp, UsersApp>();
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -49,7 +52,18 @@ namespace FantasyStockTracker
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<User>>();
 
-            services.AddAuthentication();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +86,10 @@ namespace FantasyStockTracker
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
