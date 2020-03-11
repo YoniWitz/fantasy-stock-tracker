@@ -5,9 +5,11 @@ using FantasyStockTracker.Infrasctructure.Security;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +41,11 @@ namespace FantasyStockTracker
             services.AddScoped<IHoldingsApp, HoldingsApp>();
             services.AddScoped<IUsersApp, UsersApp>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

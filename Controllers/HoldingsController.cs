@@ -29,7 +29,6 @@ namespace FantasyStockTracker.Controllers
 
         //Get holdings/1
         [HttpGet("{id}", Name = "Get")]
-        [Authorize]
         public async Task<ActionResult<HoldingDTO>> Get(Guid id)
         {
             var holdingDTO = await _holdingsApp.GetHoldingDTO(id);
