@@ -6,6 +6,7 @@ namespace FantasyStockTracker.Application.interfaces
 {
     public interface IUsersApp : IDisposable
     {
-        Task<UserDTO> Login(UserDTO userDTO);
+        Task<UserDTO> Login(UserLoginDTO userLoginDTO);
+        Task<UserDTO> Register(UserRegisterDTO userRegisterDTO);
     }
 }

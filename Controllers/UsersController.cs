@@ -19,14 +19,24 @@ namespace FantasyStockTracker.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserDTO>> Login(UserDTO userDTO)
+        public async Task<ActionResult<UserDTO>> Login(UserLoginDTO userLoginDTO)
         {
-            var loggedInUser = await _usersApp.Login(userDTO);
+            var loggedInUser = await _usersApp.Login(userLoginDTO);
             if (loggedInUser == null)
             {
                 return NotFound();
             }
             return loggedInUser;
+        }
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<ActionResult<UserDTO>> Register(UserRegisterDTO userRegisterDTO){
+            var registeredUserDTO = await _usersApp.Register(userRegisterDTO);
+            if(registeredUserDTO.Message != null){
+                return BadRequest(registeredUserDTO.Message);
+            }
+            return Created("", registeredUserDTO);
         }
     }
 }
