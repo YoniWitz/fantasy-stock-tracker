@@ -28,9 +28,9 @@ namespace FantasyStockTracker.Application
         {
             var user = await _userManager.FindByEmailAsync(userLoginDTO.Email);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
+            var userResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
 
-            if (result.Succeeded)
+            if (userResult.Succeeded)
             {
                 return new UserDTO
                 {

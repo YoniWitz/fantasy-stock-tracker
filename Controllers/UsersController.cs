@@ -1,6 +1,5 @@
 
 using System.Threading.Tasks;
-using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
