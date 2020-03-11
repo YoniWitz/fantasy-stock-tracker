@@ -45,29 +45,30 @@ namespace FantasyStockTracker.Application
         public async Task<UserDTO> Register(UserRegisterDTO userRegisterDTO)
         {
             var userDTO = new UserDTO();
-            if(await _context.Users.Where(x=> x.Email == userRegisterDTO.Email).AnyAsync()){
-                userDTO.Message = "Email already exists in system";
-                return userDTO;
-            }
-            if(await _context.Users.Where(x=> x.UserName == userRegisterDTO.UserName).AnyAsync()){
-                userDTO.Message = "User name already exists in system";
-                return userDTO;
-            }
+            if (await _context.Users.Where(x => x.Email == userRegisterDTO.Email).AnyAsync())
+            {
+                userDTO.Message.Add("Email already exists in system");
+            }         
 
-            var newUser = new User{
+            var newUser = new User
+            {
                 DisplayName = userRegisterDTO.DisplayName,
                 Email = userRegisterDTO.Email,
                 UserName = userRegisterDTO.UserName,
             };
 
             var newUserResult = await _userManager.CreateAsync(newUser, userRegisterDTO.Password);
-            if(newUserResult.Succeeded){
+
+            if (newUserResult.Succeeded)
+            {
                 userDTO.DisplayName = newUser.DisplayName;
                 userDTO.UserName = newUser.UserName;
                 userDTO.Token = _jwtGenerator.CreateToken(newUser);
             }
-            else{
-                userDTO.Message = "Error registering new user";
+            else
+            {
+                foreach (var Error in newUserResult.Errors)
+                    userDTO.Message.Add(Error.Description);
             }
             return userDTO;
         }
@@ -75,7 +76,7 @@ namespace FantasyStockTracker.Application
         private static UserDTO UserToDTO(User user) =>
              new UserDTO
              {
-               //  Email = user.Email
+                 //  Email = user.Email
              };
 
         private bool _disposed;
@@ -98,6 +99,6 @@ namespace FantasyStockTracker.Application
             GC.SuppressFinalize(this);
         }
 
-        
+
     }
 }
