@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyStockTracker.Controllers
@@ -17,6 +18,7 @@ namespace FantasyStockTracker.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserDTO>> Login(UserDTO userDTO)
         {
             var loggedInUser = await _usersApp.Login(userDTO);
