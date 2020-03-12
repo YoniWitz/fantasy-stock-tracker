@@ -35,9 +35,10 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     handleSubmit(holding)
       .then(() => {
         onCancelForm(false);
-        setSelectedHolding(holding);
-        setSpinning(false);
-      });
+        setSelectedHolding(holding);       
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setSpinning(false));
   }
 
   return (

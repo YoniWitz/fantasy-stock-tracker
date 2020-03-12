@@ -15,8 +15,9 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
     setTarget(id);
     handleDeleteHolding(id)
       .then(() => setTarget(''));
-      handleSelectHolding(null);
+    handleSelectHolding(null);
   }
+  
   return (
     <ul>
       {holdings.map(holding => (
@@ -34,7 +35,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
 
             </p>
             <Button style={{ margin: '5px', float: "right" }} variant="danger" onClick={() => handleDeleteButton(holding.id)}>
-              {target === holding.id  ?
+              {target === holding.id ?
                 <Spinner
                   as="span"
                   animation="border"

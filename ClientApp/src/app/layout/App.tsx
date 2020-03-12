@@ -21,7 +21,8 @@ const App = () => {
         setHoldings(holdingsJson)
       )
       .then(() => setSpinning(false))
-      .catch(err => console.log(`${err}, error fetching holdings`));
+      .catch(err => console.log(`${err}, error fetching holdings`))
+      .finally(() => setSpinning(false));
   }, []);
 
   const handleDeleteHolding = (id: string) => {
@@ -29,7 +30,7 @@ const App = () => {
       axiosagent.HoldingsRequests.delete(id)
         .then(() => setHoldings(holdings.filter(holding => holding.id !== id)))
         .then(() => resolve())
-        .catch(err => console.log(`${err}, error deleting holding`));
+        .catch((err) => reject(err));
     })
   }
 
@@ -38,7 +39,7 @@ const App = () => {
       axiosagent.HoldingsRequests.create(newHolding)
         .then(createdHolding => setHoldings([...holdings, createdHolding]))
         .then(() => resolve())
-        .catch(err => console.log(`${err}, error creating holding`));
+        .catch((err) => reject(err));
     })
   }
 
@@ -47,7 +48,7 @@ const App = () => {
       axiosagent.HoldingsRequests.update(editedHolding.id, editedHolding)
         .then(updatedHolding => setHoldings([...holdings.filter(holding => holding.id !== updatedHolding.id), updatedHolding]))
         .then(() => resolve())
-        .catch(err => console.log(`${err}, error updating holding`));
+        .catch((err) => reject(err));
     })
   }
 
