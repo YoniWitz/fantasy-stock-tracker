@@ -14,8 +14,7 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
     <Navbar sticky="top">
       <Container>
         <Navbar.Brand href="#home">Fantasy Stock Tracker</Navbar.Brand>
-        <Nav className="mr-auto">
-         
+        <Nav className="mr-auto">        
           <Nav.Link href="/holdings">Holdings</Nav.Link>
           <Nav.Link>
             <Button variant="primary" onClick={() => setShowModal(true)}>
