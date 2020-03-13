@@ -15,13 +15,13 @@ export const LoginForm = () => {
         console.log(loginUser);
     }
     return (
-        <Form className="border border-primary">
+        <Form>
             <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" placeholder="Enter Email" name="email" onChange={handleChange} value={loginUser.email} />
             </Form.Group>
             <Form.Group>
-                <Form.Label>Name</Form.Label>
+                <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Enter Password" name="password" onChange={handleChange} value={loginUser.password} />
             </Form.Group>
             <div className="mb-2">
