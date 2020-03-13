@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { ILoginUser } from '../../../app/models/IUsers';
+import axiosagent from '../../../app/api/axiosagent'
 
 export const LoginForm = () => {
     let [loginUser, setLoginUser] = useState<ILoginUser>({email:'', password:''});
@@ -12,7 +13,9 @@ export const LoginForm = () => {
 
     const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        console.log(loginUser);
+       axiosagent.UsersRequests.login(loginUser)
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
     }
     return (
         <Form>

@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { IHolding } from '../models/IHolding';
 import { ILoginUser, IRegisterUser, IUser } from '../models/IUsers';
 
-axios.defaults.baseURL = 'http://localhost:5002/';
+axios.defaults.baseURL = 'http://localhost:5002/api/';
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
