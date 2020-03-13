@@ -8,6 +8,7 @@ import axiosagent from "../api/axiosagent";
 import { Spinning } from "./Spinning";
 import { Route } from "react-router-dom";
 import { HomePage } from "../../components/home/HomePage";
+import { LoginForm } from "../../components/users/forms/LoginForm";
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -68,6 +69,7 @@ const App = () => {
                 holdings={holdings} />}
           />
          } 
+         <Route exact path='/login' component={LoginForm} />
       </Container>
     </Fragment >
   );
