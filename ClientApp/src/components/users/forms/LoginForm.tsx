@@ -31,8 +31,8 @@ export const LoginForm: React.FC<IProps> = ({ setUser }) => {
         setSpinning(true);
         axiosagent.UsersRequests.login(loginUser)
             .then((response: IUser) => {
-                console.log(response);
                 setUser(response);
+                localStorage.setItem('user', JSON.stringify(response));
                 setLoggedIn(true);
             })
             .catch(err => console.log(err))
