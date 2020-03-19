@@ -18,6 +18,15 @@ const App = () => {
   let [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
+    let tempUser: IUser = JSON.parse(localStorage.getItem('user')!);
+
+    if (tempUser) {
+      setUser({
+        displayName: tempUser.displayName,
+        token: tempUser.token,
+        userName: tempUser.userName
+      })
+    }
     axiosagent.HoldingsRequests.list()
       .then(holdingsJson =>
         // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
@@ -57,7 +66,7 @@ const App = () => {
 
   return (
     <Fragment>
-      <NavMenu user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
+      <NavMenu setUser={setUser} user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "80px" }}>
         <Route exact path='/'
           render={(props) => <HomePage {...props} user={user} />} />
