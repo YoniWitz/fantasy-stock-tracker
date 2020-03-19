@@ -6,10 +6,11 @@ import { Container } from "react-bootstrap";
 import { HoldingDashboard } from '../../components/holdings/dashboard/HoldingDashboard'
 import axiosagent from "../api/axiosagent";
 import { Spinning } from "./Spinning";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { HomePage } from "../../components/home/HomePage";
 import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
+import NotFound from "./NotFound";
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -68,21 +69,25 @@ const App = () => {
     <Fragment>
       <NavMenu setUser={setUser} user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "80px" }}>
-        <Route exact path='/'
-          render={(props) => <HomePage {...props} user={user} />} />
-        {spinning ? <Spinning content='Loading Holdings' /> :
-          <Route path='/holdings' render=
-            {() =>
-              <HoldingDashboard
-                handleDeleteHolding={handleDeleteHolding}
-                selectedHolding={selectedHolding}
-                setSelectedHolding={setSelectedHolding}
-                handleEditSubmit={handleEditSubmit}
-                holdings={holdings} />}
-          />
-        }
-        <Route exact path='/login'
-          render={(props) => <LoginForm  {...props} setUser={setUser} />} />
+        <Switch>
+          <Route exact path='/'
+            render={(props) => <HomePage {...props} user={user} />} />
+          {spinning ? <Spinning content='Loading Holdings' /> :
+            <Route path='/holdings' render=
+              {() =>
+                <HoldingDashboard
+                  handleDeleteHolding={handleDeleteHolding}
+                  selectedHolding={selectedHolding}
+                  setSelectedHolding={setSelectedHolding}
+                  handleEditSubmit={handleEditSubmit}
+                  holdings={holdings} />}
+            />
+          }
+          <Route exact path='/login'
+            render={(props) => <LoginForm  {...props} setUser={setUser} />} />
+
+          <Route component={NotFound} />
+        </Switch>
       </Container>
     </Fragment >
   );
