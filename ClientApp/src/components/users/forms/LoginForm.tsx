@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Spinner } from 'react-bootstrap'
 import { ILoginUser, IUser } from '../../../app/models/IUsers';
 import axiosagent from '../../../app/api/axiosagent'
-import { useHistory } from 'react-router-dom';
+import { history } from '../../../index';
 
 interface IProps {
     setUser: (user: IUser) => void;
@@ -12,14 +12,13 @@ export const LoginForm: React.FC<IProps> = ({ setUser }) => {
     let [spinning, setSpinning] = useState<boolean>(false);
     let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
     let [loggedIn, setLoggedIn] = useState<boolean>(false);
-    let history = useHistory();
 
     useEffect(() => {
         if (loggedIn) history.push('/holdings');
 
         let isEmailInvalid = loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? false : true;
         setSubmitDisabled(loginUser.password.length < 6 || isEmailInvalid);
-    }, [loginUser, loggedIn, history]);
+    }, [loginUser, loggedIn]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let { name, value } = e.target;

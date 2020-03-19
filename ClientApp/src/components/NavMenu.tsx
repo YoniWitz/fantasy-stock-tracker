@@ -3,7 +3,7 @@ import { Navbar, Container, Nav, Button, Modal } from 'react-bootstrap';
 import { HoldingForm } from './holdings/form/HoldingForm';
 import { IHolding } from '../app/models/IHolding';
 import { IUser } from '../app/models/IUsers';
-import { useHistory } from 'react-router-dom';
+import { history } from '../index';
 
 interface IProps {
   user: IUser | null;
@@ -13,7 +13,6 @@ interface IProps {
 }
 export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHolding, user, setUser }) => {
   let [showModal, setShowModal] = useState<boolean>(false);
-  let history = useHistory();
 
   const logout = () => {
       setUser(null);

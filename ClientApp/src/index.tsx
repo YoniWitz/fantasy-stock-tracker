@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import './app/layout/custom.css';
 import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+export const history = createBrowserHistory();
 ReactDOM.render
     (
-        <BrowserRouter>
+        <Router history={history}>
             <App />
-        </BrowserRouter>,
+        </Router>,
         document.getElementById('root')
     );
 
