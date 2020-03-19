@@ -12,6 +12,7 @@ import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
 import { ToastContainer } from 'react-toastify';
+import { history } from '../../index'
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -28,15 +29,20 @@ const App = () => {
         token: tempUser.token,
         userName: tempUser.userName
       })
+
+      axiosagent.HoldingsRequests.list()
+        .then(holdingsJson =>
+          // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
+          setHoldings(holdingsJson)
+        )
+        .then(() => setSpinning(false))
+        .catch(err => console.log(`${err}, error fetching holdings`))
+        .finally(() => setSpinning(false));
     }
-    axiosagent.HoldingsRequests.list()
-      .then(holdingsJson =>
-        // resJson.forEach(holding => holding.id = holding.date.split('.')[0].replace('T', ' '); )
-        setHoldings(holdingsJson)
-      )
-      .then(() => setSpinning(false))
-      .catch(err => console.log(`${err}, error fetching holdings`))
-      .finally(() => setSpinning(false));
+    else {
+      history.push('/login')
+      setSpinning(false);
+    }
   }, []);
 
   const handleDeleteHolding = (id: string) => {

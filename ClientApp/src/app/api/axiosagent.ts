@@ -6,12 +6,20 @@ import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'http://localhost:5002/api/';
 
+axios.interceptors.request.use(config =>{
+    let user:IUser = JSON.parse(window.localStorage.getItem('user')!);
+    if(user){
+        config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+}, error => Promise.reject(error));
+
 axios.interceptors.response.use(undefined, (error) => {
     const { status, config, data } = error.response;
     if (status === 404 || (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id'))) { history.push('/notfound'); }
     else if (status === 500) { toast.error('Server error - check terminal for more info'); }
     else if (status === 401) {
-        //history.push('/login');
+        history.push('/login');
         toast.error('Please login first');
     }
 })
