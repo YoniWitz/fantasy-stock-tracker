@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import { IHolding } from "../../../app/models/IHolding";
 import { v4 as uuid } from 'uuid';
+import { toast } from 'react-toastify';
 
 interface IProps {
   onCancelForm: (isAlive: boolean) => void;
@@ -20,8 +21,15 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
       }
     }
   }
+
   let [holding, setHolding] = useState<IHolding>(initHolding);
   let [spinning, setSpinning] = useState<boolean>(false);
+  let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
+
+  useEffect(() => {
+     setSubmitDisabled(holding.name.length < 1);
+  }, [holding])
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = event.currentTarget;
@@ -34,6 +42,7 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     if (holding.id.length === 0) holding.id = uuid();
     handleSubmit(holding)
       .then(() => {
+        toast.success('Holding Created'); 
         onCancelForm(false);
         setSelectedHolding(holding);
       })
@@ -45,7 +54,8 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     <Form className="border border-primary">
       <Form.Group>
         <Form.Label>Name</Form.Label>
-        <Form.Control type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
+        <Form.Control required type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
+        <div className="text-danger">{holding.name.length < 1 ? "Must enter a name" : null}</div>
       </Form.Group>
       {spinning ?
         <div className="d-flex justify-content-center">
@@ -59,7 +69,7 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
         </div>
         :
         <div className="mb-2">
-          <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleFormSubmit}>
+          <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleFormSubmit} disabled={submitDisabled}>
             Submit
         </Button>{' '}
           <Button onClick={() => onCancelForm(false)} style={{ float: 'right' }} variant="secondary" size="lg">

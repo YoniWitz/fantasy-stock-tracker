@@ -12,7 +12,7 @@ import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
 import { ToastContainer } from 'react-toastify';
-import { history } from '../../index'
+import { history } from '../../index';
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
