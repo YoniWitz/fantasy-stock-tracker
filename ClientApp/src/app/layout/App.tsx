@@ -9,11 +9,13 @@ import { Spinning } from "./Spinning";
 import { Route } from "react-router-dom";
 import { HomePage } from "../../components/home/HomePage";
 import { LoginForm } from "../../components/users/forms/LoginForm";
+import { IUser } from "../models/IUsers";
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
   let [selectedHolding, setSelectedHolding] = useState<IHolding | null>(null);
   let [spinning, setSpinning] = useState<boolean>(true);
+  let [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
     axiosagent.HoldingsRequests.list()
@@ -55,21 +57,23 @@ const App = () => {
 
   return (
     <Fragment>
-      <NavMenu setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
+      <NavMenu user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "80px" }}>
-        <Route exact path='/' component={HomePage} />
+        <Route exact path='/'
+          render={(props) => <HomePage {...props} user={user} />} />
         {spinning ? <Spinning content='Loading Holdings' /> :
           <Route path='/holdings' render=
             {() =>
-              <HoldingDashboard 
+              <HoldingDashboard
                 handleDeleteHolding={handleDeleteHolding}
                 selectedHolding={selectedHolding}
                 setSelectedHolding={setSelectedHolding}
                 handleEditSubmit={handleEditSubmit}
                 holdings={holdings} />}
           />
-         } 
-         <Route exact path='/login' component={LoginForm} />
+        }
+        <Route exact path='/login'
+          render={(props) => <LoginForm  {...props} setUser={setUser} />} />
       </Container>
     </Fragment >
   );

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Spinner } from 'react-bootstrap'
-import { ILoginUser } from '../../../app/models/IUsers';
+import { ILoginUser, IUser } from '../../../app/models/IUsers';
 import axiosagent from '../../../app/api/axiosagent'
 import { useHistory } from 'react-router-dom';
 
-export const LoginForm = () => {
+interface IProps {
+    setUser: (user: IUser) => void;
+}
+export const LoginForm: React.FC<IProps> = ({ setUser }) => {
     let [loginUser, setLoginUser] = useState<ILoginUser>({ email: '', password: '' });
     let [spinning, setSpinning] = useState<boolean>(false);
     let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
@@ -12,11 +15,11 @@ export const LoginForm = () => {
     let history = useHistory();
 
     useEffect(() => {
-        if(loggedIn) history.push('/holdings');
+        if (loggedIn) history.push('/holdings');
 
         let isEmailInvalid = loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? false : true;
         setSubmitDisabled(loginUser.password.length < 6 || isEmailInvalid);
-    }, [loginUser, loggedIn]);
+    }, [loginUser, loggedIn, history]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let { name, value } = e.target;
@@ -27,16 +30,27 @@ export const LoginForm = () => {
         e.preventDefault();
         setSpinning(true);
         axiosagent.UsersRequests.login(loginUser)
-            .then(response => {console.log(response); setLoggedIn(true);})
+            .then((response: IUser) => {
+                console.log(response);
+                setUser(response);
+                setLoggedIn(true);
+            })
             .catch(err => console.log(err))
             .finally(() => setSpinning(false));
+    }
+
+    const clearForm = () => {
+        setLoginUser({
+            email: '',
+            password: ''
+        })
     }
     return (
         <Form>
             <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control required type="email" placeholder="Enter Email" name="email" onChange={handleChange} value={loginUser.email} />
-                <div className="text-danger">{loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? null: "Must enter valid email"}</div>
+                <div className="text-danger">{loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? null : "Must enter valid email"}</div>
             </Form.Group>
 
             <Form.Group>
@@ -59,8 +73,8 @@ export const LoginForm = () => {
                     <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleLogin} disabled={submitDisabled}>
                         Login
                     </Button>{' '}
-                    <Button style={{ float: 'right' }} variant="secondary" size="lg">
-                        Cancel
+                    <Button style={{ float: 'right' }} variant="secondary" size="lg" onClick={clearForm}>
+                        Clear Form
                     </Button>
                 </div>
             }

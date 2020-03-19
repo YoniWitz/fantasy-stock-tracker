@@ -1,7 +1,9 @@
 export interface IUser {
-    displayname: string;
-    username: string;
+    displayName: string;
+    userName: string;
     token: string;
+    password?:string;
+    message?:string;
 }
 
 export interface ILoginUser {
@@ -11,7 +13,7 @@ export interface ILoginUser {
 
 export interface IRegisterUser {
     email: string;
-    displayname: string;
-    username: string;
+    displayName: string;
+    userName: string;
     passwrod: string;
 }
