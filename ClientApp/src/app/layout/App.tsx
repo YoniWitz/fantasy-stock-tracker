@@ -68,7 +68,7 @@ const App = () => {
 
   return (
     <Fragment>
-      <ToastContainer position="bottom-right" />>
+      <ToastContainer position="bottom-right" />
       <NavMenu setUser={setUser} user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
       <Container style={{ marginTop: "80px" }}>
         <Switch>
