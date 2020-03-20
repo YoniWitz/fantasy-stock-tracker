@@ -57,7 +57,7 @@ const App = () => {
     return new Promise(function (resolve, reject) {
       axiosagent.HoldingsRequests.create(newHolding)
         .then(createdHolding => setHoldings([...holdings, createdHolding]))
-        .then(() => resolve())
+        .then(() => resolve('created'))
         .catch((err) => reject(err));
     })
   }
@@ -66,7 +66,7 @@ const App = () => {
     return new Promise(function (resolve, reject) {
       axiosagent.HoldingsRequests.update(editedHolding.id, editedHolding)
         .then(updatedHolding => setHoldings([...holdings.filter(holding => holding.id !== updatedHolding.id), updatedHolding]))
-        .then(() => resolve())
+        .then(() => resolve('updated'))
         .catch((err) => reject(err));
     })
   }
