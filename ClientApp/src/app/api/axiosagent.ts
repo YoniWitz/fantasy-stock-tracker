@@ -29,7 +29,11 @@ axios.interceptors.response.use(undefined, (error) => {
                 history.push('/notfound');
             }
             else if (statusText === 'Bad Request' && config.method === "post") {
-                data.map((error: string) => toast.error(error , { autoClose: false }))
+                data.map((error: string) => toast.error(error, { autoClose: false }))
+            }
+            //bad update request
+            else if (config.method === 'put' && statusText === "Bad Request") {
+                toast.error(data);
             }
         }
         else if (status === 500) {

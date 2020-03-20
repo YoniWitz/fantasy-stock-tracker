@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Media, Button, Badge, Spinner } from "react-bootstrap";
 import { IHolding } from "../../../app/models/IHolding";
+import { toast } from "react-toastify";
 
 interface IProps {
   holdings: IHolding[];
@@ -14,7 +15,7 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
   const handleDeleteButton = (id: string) => {
     setTarget(id);
     handleDeleteHolding(id)
-      .then(() => setTarget(''));
+      .then(() => {setTarget(''); toast.success('Holding deleted')});
     handleSelectHolding(null);
   }
   

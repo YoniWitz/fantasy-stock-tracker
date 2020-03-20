@@ -41,8 +41,8 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     setSpinning(true);
     if (holding.id.length === 0) holding.id = uuid();
     handleSubmit(holding)
-      .then(() => {
-        toast.success('Holding Created'); 
+      .then((message) => {
+        toast.success(`Holding ${message}`); 
         onCancelForm(false);
         setSelectedHolding(holding);
       })

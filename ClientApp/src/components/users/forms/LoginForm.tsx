@@ -14,7 +14,7 @@ export const LoginForm: React.FC<IProps> = ({ setUser }) => {
     let [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-        if (loggedIn) history.push('/holdings');
+        if (loggedIn) history.push('/');
 
         let isEmailInvalid = loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? false : true;
         setSubmitDisabled(loginUser.password.length < 6 || isEmailInvalid);
