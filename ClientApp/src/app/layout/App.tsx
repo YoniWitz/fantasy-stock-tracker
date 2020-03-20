@@ -13,6 +13,7 @@ import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
 import { ToastContainer } from 'react-toastify';
 import { history } from '../../index';
+import { RegisterForm } from "../../components/users/forms/RegisterForm"
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -39,8 +40,7 @@ const App = () => {
         .catch(err => console.log(`${err}, error fetching holdings`))
         .finally(() => setSpinning(false));
     }
-    else {
-      history.push('/login')
+    else {   
       setSpinning(false);
     }
   }, []);
@@ -93,7 +93,8 @@ const App = () => {
           }
           <Route exact path='/login'
             render={(props) => <LoginForm  {...props} setUser={setUser} />} />
-
+          <Route exact path='/register'
+            render={(props) => <RegisterForm  {...props} setUser={setUser} />} />
           <Route component={NotFound} />
         </Switch>
       </Container>

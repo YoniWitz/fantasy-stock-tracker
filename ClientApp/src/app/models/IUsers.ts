@@ -15,5 +15,5 @@ export interface IRegisterUser {
     email: string;
     displayName: string;
     userName: string;
-    passwrod: string;
+    password: string;
 }

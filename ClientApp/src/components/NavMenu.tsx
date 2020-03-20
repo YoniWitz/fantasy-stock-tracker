@@ -43,7 +43,7 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
         }
         <Nav className="justify-content-end">
           <Navbar.Text>Hello {user ? user.displayName : 'Guest'}</Navbar.Text>
-          {user && <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link>}
+          {user ? <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link> :  <Nav.Link href="/register">Register</Nav.Link>}
         </Nav>
       </Container>
     </Navbar>

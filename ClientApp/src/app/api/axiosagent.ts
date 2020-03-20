@@ -16,14 +16,21 @@ axios.interceptors.request.use(config => {
 }, error => Promise.reject(error));
 
 axios.interceptors.response.use(undefined, (error) => {
-    const { status, config, data } = error.response;
+    const { status, config, data, statusText } = error.response;
     if (status === 404 && !localStorageUser) {
         toast.error('Username and password not found');
     }
-    if (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
-        history.push('/notfound');
+    if (status === 400) {
+        if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
+            history.push('/notfound');
+        }
+        else if (statusText === 'Bad Request' && config.method === "post") {
+            data.map((error: string) => toast.error(error))
+        }
     }
-    else if (status === 500) { toast.error('Server error - check terminal for more info'); }
+    else if (status === 500) {
+        toast.error('Server error - check terminal for more info');
+    }
     else if (status === 401) {
         history.push('/login');
         toast.error('Please login first');
