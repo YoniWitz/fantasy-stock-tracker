@@ -10,7 +10,7 @@ export const HomePage: React.FC<IProps> = ({ user }) => {
     return (
         <Jumbotron style={{ marginTop: '7em', textAlign: "center", color: "white" }} className="homepage" fluid>
             <Container>
-                <h1>Welcome {user ? 'Back' : ''}  To</h1>
+                <h1>Welcome {user ? 'Back ' + user.displayName : ''}  To</h1>
                 <h1>Fantasy Stock Tracker</h1>
                 {user ?
                     <Fragment>
@@ -23,7 +23,7 @@ export const HomePage: React.FC<IProps> = ({ user }) => {
                         <Button as={Link} to='/login' size='lg'>
                             Login
                         </Button>
-                        <Button as={Link} to='/login' size='lg'>
+                        <Button as={Link} to='/register' size='lg'>
                             Register
                         </Button>
                     </Fragment>

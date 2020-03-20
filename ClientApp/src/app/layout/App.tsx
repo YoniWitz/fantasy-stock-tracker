@@ -12,7 +12,7 @@ import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
 import { ToastContainer } from 'react-toastify';
-import { history } from '../../index';
+import { RegisterForm } from "../../components/users/forms/RegisterForm"
 
 const App = () => {
   let [holdings, setHoldings] = useState<IHolding[]>([]);
@@ -40,7 +40,6 @@ const App = () => {
         .finally(() => setSpinning(false));
     }
     else {
-      history.push('/login')
       setSpinning(false);
     }
   }, []);
@@ -76,7 +75,7 @@ const App = () => {
     <Fragment>
       <ToastContainer position="bottom-right" />
       <NavMenu setUser={setUser} user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
-      <Container style={{ marginTop: "80px" }}>
+      <Container style={{ marginTop: "10px" }}>
         <Switch>
           <Route exact path='/'
             render={(props) => <HomePage {...props} user={user} />} />
@@ -93,7 +92,8 @@ const App = () => {
           }
           <Route exact path='/login'
             render={(props) => <LoginForm  {...props} setUser={setUser} />} />
-
+          <Route exact path='/register'
+            render={(props) => <RegisterForm  {...props} setUser={setUser} />} />
           <Route component={NotFound} />
         </Switch>
       </Container>
