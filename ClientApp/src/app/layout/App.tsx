@@ -12,7 +12,6 @@ import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
 import { ToastContainer } from 'react-toastify';
-import { history } from '../../index';
 import { RegisterForm } from "../../components/users/forms/RegisterForm"
 
 const App = () => {
@@ -40,7 +39,7 @@ const App = () => {
         .catch(err => console.log(`${err}, error fetching holdings`))
         .finally(() => setSpinning(false));
     }
-    else {   
+    else {
       setSpinning(false);
     }
   }, []);
@@ -76,7 +75,7 @@ const App = () => {
     <Fragment>
       <ToastContainer position="bottom-right" />
       <NavMenu setUser={setUser} user={user} setSelectedHolding={setSelectedHolding} handleCreateSubmit={handleCreateSubmit} />
-      <Container style={{ marginTop: "80px" }}>
+      <Container style={{ marginTop: "10px" }}>
         <Switch>
           <Route exact path='/'
             render={(props) => <HomePage {...props} user={user} />} />

@@ -14,10 +14,11 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
     let [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-        if (loggedIn) history.push('/holdings');
+        if (loggedIn) history.push('/');
 
         let isEmailInvalid = registerUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? false : true;
-        setSubmitDisabled(registerUser.password.length < 6 || isEmailInvalid);
+        setSubmitDisabled(registerUser.password.length < 6 || isEmailInvalid 
+            || registerUser.displayName.length < 1 || registerUser.userName.length < 1);
     }, [registerUser, loggedIn]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +49,18 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
     }
     return (
         <Form>
+             <Form.Group> 
+                <Form.Label>User Name</Form.Label>
+                <Form.Control required type="text" placeholder="Enter User Name" name="userName" onChange={handleChange} value={registerUser.userName} />
+                <div className="text-danger">{registerUser.userName.length < 1 ? "User name must contain 1 character at least" : null} </div>
+            </Form.Group>
+
+            <Form.Group> 
+                <Form.Label>Display Name</Form.Label>
+                <Form.Control required type="text" placeholder="Enter Display Name" name="displayName" onChange={handleChange} value={registerUser.displayName} />
+                <div className="text-danger">{registerUser.displayName.length < 1 ? "Display Name must contain 1 character at least" : null} </div>
+            </Form.Group>
+
             <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control required type="email" placeholder="Enter Email" name="email" onChange={handleChange} value={registerUser.email} />

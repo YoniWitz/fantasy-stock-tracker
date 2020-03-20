@@ -16,24 +16,29 @@ axios.interceptors.request.use(config => {
 }, error => Promise.reject(error));
 
 axios.interceptors.response.use(undefined, (error) => {
-    const { status, config, data, statusText } = error.response;
-    if (status === 404 && !localStorageUser) {
-        toast.error('Username and password not found');
+    if (error.message === 'Network Error' && !error.response) {
+        toast.error('Network error - make sure API is running!', { autoClose: false })
     }
-    if (status === 400) {
-        if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
-            history.push('/notfound');
+    else {
+        const { status, config, data, statusText } = error.response;
+        if (status === 404 && !localStorageUser) {
+            toast.error('Username and password not found');
         }
-        else if (statusText === 'Bad Request' && config.method === "post") {
-            data.map((error: string) => toast.error(error))
+        if (status === 400) {
+            if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
+                history.push('/notfound');
+            }
+            else if (statusText === 'Bad Request' && config.method === "post") {
+                data.map((error: string) => toast.error(error , { autoClose: false }))
+            }
         }
-    }
-    else if (status === 500) {
-        toast.error('Server error - check terminal for more info');
-    }
-    else if (status === 401) {
-        history.push('/login');
-        toast.error('Please login first');
+        else if (status === 500) {
+            toast.error('Server error - check terminal for more info');
+        }
+        else if (status === 401) {
+            history.push('/');
+            toast.error('Please login first');
+        }
     }
     throw error.response;
 })
