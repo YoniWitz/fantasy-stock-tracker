@@ -5,23 +5,30 @@ import { history } from '../../index';
 import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'http://localhost:5002/api/';
+let localStorageUser: IUser;
 
-axios.interceptors.request.use(config =>{
-    let user:IUser = JSON.parse(window.localStorage.getItem('user')!);
-    if(user){
-        config.headers.Authorization = `Bearer ${user.token}`;
+axios.interceptors.request.use(config => {
+    localStorageUser = JSON.parse(window.localStorage.getItem('user')!);
+    if (localStorageUser) {
+        config.headers.Authorization = `Bearer ${localStorageUser.token}`;
     }
     return config;
 }, error => Promise.reject(error));
 
 axios.interceptors.response.use(undefined, (error) => {
     const { status, config, data } = error.response;
-    if (status === 404 || (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id'))) { history.push('/notfound'); }
+    if (status === 404 && !localStorageUser) {
+        toast.error('Username and password not found');
+    }
+    if (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
+        history.push('/notfound');
+    }
     else if (status === 500) { toast.error('Server error - check terminal for more info'); }
     else if (status === 401) {
         history.push('/login');
         toast.error('Please login first');
     }
+    throw error.response;
 })
 const responseBody = (response: AxiosResponse) => response.data;
 
