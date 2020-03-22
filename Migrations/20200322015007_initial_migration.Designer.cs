@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyStockTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200308012458_IdentityTable")]
-    partial class IdentityTable
+    [Migration("20200322015007_initial_migration")]
+    partial class initial_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,7 +18,27 @@ namespace FantasyStockTracker.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1");
 
-            modelBuilder.Entity("FantasyStockTracker.Models.AppUser", b =>
+            modelBuilder.Entity("FantasyStockTracker.Models.Holding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Holdings");
+                });
+
+            modelBuilder.Entity("FantasyStockTracker.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -83,37 +103,6 @@ namespace FantasyStockTracker.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("FantasyStockTracker.Models.Holding", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Holdings");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("56cf61d8-ad27-4411-849f-7ce6a8b6667a"),
-                            Name = "Value 101"
-                        },
-                        new
-                        {
-                            Id = new Guid("2cb0d0b9-3c13-47d4-867f-3d26cec8311e"),
-                            Name = "Value 202"
-                        },
-                        new
-                        {
-                            Id = new Guid("b0839923-b3da-41c5-99d3-667e2869e7cb"),
-                            Name = "Value 303"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -244,6 +233,15 @@ namespace FantasyStockTracker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FantasyStockTracker.Models.Holding", b =>
+                {
+                    b.HasOne("FantasyStockTracker.Models.User", "User")
+                        .WithMany("Holdings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -255,7 +253,7 @@ namespace FantasyStockTracker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("FantasyStockTracker.Models.AppUser", null)
+                    b.HasOne("FantasyStockTracker.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +262,7 @@ namespace FantasyStockTracker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("FantasyStockTracker.Models.AppUser", null)
+                    b.HasOne("FantasyStockTracker.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,7 +277,7 @@ namespace FantasyStockTracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FantasyStockTracker.Models.AppUser", null)
+                    b.HasOne("FantasyStockTracker.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -288,7 +286,7 @@ namespace FantasyStockTracker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("FantasyStockTracker.Models.AppUser", null)
+                    b.HasOne("FantasyStockTracker.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
