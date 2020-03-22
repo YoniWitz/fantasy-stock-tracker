@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
+using FantasyStockTracker.Models.DTOs;
 using FantasyStockTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +15,11 @@ namespace FantasyStockTracker.Application
     {
         private readonly DataContext _context;
         private readonly IUsersApp _usersApp;
-        private readonly User user;
-        public HoldingsApp(IUsersApp usersApp, DataContext context)
+        private readonly IMapper _mapper;
+
+        public HoldingsApp(IMapper mapper, IUsersApp usersApp, DataContext context)
         {
+            _mapper = mapper;
             _context = context;
             _usersApp = usersApp;
         }
@@ -23,11 +27,11 @@ namespace FantasyStockTracker.Application
         public async Task<List<HoldingDTO>> GetHoldings()
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
-            var holdingsDTOs = await _context.Holdings
+            var holdings = await _context.Holdings
             .Where(x => x.User.Id == user.Id)
-            .Select(x => HoldingToDTO(x))
             .ToListAsync();
-            return holdingsDTOs;
+
+            return _mapper.Map<List<Holding>, List<HoldingDTO>>(holdings);
         }
 
         public async Task<HoldingDTO> GetHolding(Guid id)
@@ -38,7 +42,7 @@ namespace FantasyStockTracker.Application
             .FirstOrDefaultAsync(x => x.Id == id);
 
             if (holding == null) return null;
-            return HoldingToDTO(holding);
+            return _mapper.Map<Holding, HoldingDTO>(holding);
         }
 
         public async Task<HoldingDTO> PostHolding(HoldingDTO holdingDTO)
@@ -56,7 +60,7 @@ namespace FantasyStockTracker.Application
 
             var success = await _context.SaveChangesAsync() > 0;
 
-            if (success) return HoldingToDTO(holding);
+            if (success) return _mapper.Map<Holding, HoldingDTO>(holding);
             else return null;
         }
 
@@ -71,7 +75,7 @@ namespace FantasyStockTracker.Application
             currentHolding.Name = holdingDTO.Name ?? currentHolding.Name;
 
             var success = await _context.SaveChangesAsync() > 0;
-            if (success) return HoldingToDTO(currentHolding);
+            if (success) return _mapper.Map<Holding, HoldingDTO>(currentHolding);
             else return new HoldingDTO { Message = "Error updating holding" };
         }
 
@@ -105,12 +109,5 @@ namespace FantasyStockTracker.Application
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        private static HoldingDTO HoldingToDTO(Holding holding) =>
-       new HoldingDTO
-       {
-           Id = holding.Id,
-           Name = holding.Name
-       };
     }
 }

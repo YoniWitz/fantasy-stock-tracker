@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using FantasyStockTracker.Application;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Infrasctructure.Security;
@@ -41,6 +42,7 @@ namespace FantasyStockTracker
             services.AddScoped<IHoldingsApp, HoldingsApp>();
             services.AddScoped<IUsersApp, UsersApp>();
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddAutoMapper(typeof(HoldingsApp).Assembly);
             services.AddControllersWithViews(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

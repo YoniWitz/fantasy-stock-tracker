@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace FantasyStockTracker.Models
+namespace FantasyStockTracker.Models.DTOs
 {
     public class HoldingDTO
     {

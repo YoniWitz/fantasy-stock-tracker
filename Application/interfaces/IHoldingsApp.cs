@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FantasyStockTracker.Models;
+using FantasyStockTracker.Models.DTOs;
 
 namespace FantasyStockTracker.Application.interfaces
 {
