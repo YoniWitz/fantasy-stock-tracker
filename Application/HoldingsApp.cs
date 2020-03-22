@@ -12,9 +12,11 @@ namespace FantasyStockTracker.Application
     public class HoldingsApp : IHoldingsApp
     {
         private readonly DataContext _context;
-        public HoldingsApp(DataContext context)
+        private readonly IUsersApp _usersApp;
+        public HoldingsApp(IUsersApp usersApp, DataContext context)
         {
             _context = context;
+            _usersApp = usersApp;
         }
 
         public async Task<List<HoldingDTO>> GetHoldings()
@@ -32,13 +34,16 @@ namespace FantasyStockTracker.Application
 
         public async Task<HoldingDTO> PostHolding(HoldingDTO holdingDTO)
         {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
             var holding = new Holding
             {
                 Id = holdingDTO.Id,
-                Name = holdingDTO.Name
+                Name = holdingDTO.Name,
+                User = user
             };
 
             _context.Holdings.Add(holding);
+
 
             var success = await _context.SaveChangesAsync() > 0;
 

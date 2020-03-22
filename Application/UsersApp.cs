@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
 using FantasyStockTracker.Models.DTOs;
 using FantasyStockTracker.Persistence;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +18,10 @@ namespace FantasyStockTracker.Application
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly DataContext _context;
-        public UsersApp(DataContext context, UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UsersApp(IHttpContextAccessor httpContextAccessor, DataContext context, UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator)
         {
+            _httpContextAccessor = httpContextAccessor;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,7 +52,7 @@ namespace FantasyStockTracker.Application
             if (await _context.Users.Where(x => x.Email == userRegisterDTO.Email).AnyAsync())
             {
                 userDTO.Message.Add("Email already exists in system");
-            }         
+            }
 
             var newUser = new User
             {
@@ -71,6 +75,13 @@ namespace FantasyStockTracker.Application
                     userDTO.Message.Add(Error.Description);
             }
             return userDTO;
+        }
+
+        public string GetCurrentUsername()
+        {
+            var username = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return username;
         }
 
         private static UserDTO UserToDTO(User user) =>
@@ -98,7 +109,5 @@ namespace FantasyStockTracker.Application
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-
     }
 }

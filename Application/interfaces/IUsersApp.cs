@@ -8,5 +8,6 @@ namespace FantasyStockTracker.Application.interfaces
     {
         Task<UserDTO> Login(UserLoginDTO userLoginDTO);
         Task<UserDTO> Register(UserRegisterDTO userRegisterDTO);
+        string GetCurrentUsername();
     }
 }
