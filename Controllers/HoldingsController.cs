@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FantasyStockTracker.Application.interfaces;
 using FantasyStockTracker.Models;
+using FantasyStockTracker.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyStockTracker.Controllers
