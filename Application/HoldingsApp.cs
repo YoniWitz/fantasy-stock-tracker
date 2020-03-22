@@ -21,13 +21,21 @@ namespace FantasyStockTracker.Application
 
         public async Task<List<HoldingDTO>> GetHoldings()
         {
-            var holdingsDTOs = await _context.Holdings.Select(x => HoldingToDTO(x)).ToListAsync();
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
+            var holdingsDTOs = await _context.Holdings
+            .Where(x => x.User.Email == user.Email)
+            .Select(x => HoldingToDTO(x))
+            .ToListAsync();
             return holdingsDTOs;
         }
 
         public async Task<HoldingDTO> GetHolding(Guid id)
         {
-            var holding = await _context.Holdings.FindAsync(id);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
+            var holding = await _context.Holdings
+            .Where(x => x.User.Email == user.Email)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
             if (holding == null) return null;
             return HoldingToDTO(holding);
         }
