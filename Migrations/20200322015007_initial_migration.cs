@@ -3,25 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FantasyStockTracker.Migrations
 {
-    public partial class IdentityTable : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("16ec86b8-4766-4af0-9d57-dfdf9c9b1d1b"));
-
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("8a918dd2-3a1c-47e4-a88c-2d2a4710e4ed"));
-
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("96fdccd9-3245-4231-8026-9888bbb11367"));
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -168,20 +153,24 @@ namespace FantasyStockTracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("56cf61d8-ad27-4411-849f-7ce6a8b6667a"), "Value 101" });
-
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("2cb0d0b9-3c13-47d4-867f-3d26cec8311e"), "Value 202" });
-
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("b0839923-b3da-41c5-99d3-667e2869e7cb"), "Value 303" });
+            migrationBuilder.CreateTable(
+                name: "Holdings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Holdings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Holdings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -219,6 +208,11 @@ namespace FantasyStockTracker.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Holdings_UserId",
+                table: "Holdings",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -239,40 +233,13 @@ namespace FantasyStockTracker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Holdings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("2cb0d0b9-3c13-47d4-867f-3d26cec8311e"));
-
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("56cf61d8-ad27-4411-849f-7ce6a8b6667a"));
-
-            migrationBuilder.DeleteData(
-                table: "Holdings",
-                keyColumn: "Id",
-                keyValue: new Guid("b0839923-b3da-41c5-99d3-667e2869e7cb"));
-
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("8a918dd2-3a1c-47e4-a88c-2d2a4710e4ed"), "Value 101" });
-
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("96fdccd9-3245-4231-8026-9888bbb11367"), "Value 202" });
-
-            migrationBuilder.InsertData(
-                table: "Holdings",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("16ec86b8-4766-4af0-9d57-dfdf9c9b1d1b"), "Value 303" });
         }
     }
 }

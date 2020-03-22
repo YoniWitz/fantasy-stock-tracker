@@ -15,10 +15,10 @@ export const HoldingList: React.FC<IProps> = ({ holdings, handleSelectHolding, h
   const handleDeleteButton = (id: string) => {
     setTarget(id);
     handleDeleteHolding(id)
-      .then(() => {setTarget(''); toast.success('Holding deleted')});
+      .then(() => { setTarget(''); toast.success('Holding deleted') });
     handleSelectHolding(null);
   }
-  
+
   return (
     <ul>
       {holdings.map(holding => (
