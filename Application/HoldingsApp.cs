@@ -13,6 +13,7 @@ namespace FantasyStockTracker.Application
     {
         private readonly DataContext _context;
         private readonly IUsersApp _usersApp;
+        private readonly User user;
         public HoldingsApp(IUsersApp usersApp, DataContext context)
         {
             _context = context;
@@ -23,7 +24,7 @@ namespace FantasyStockTracker.Application
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
             var holdingsDTOs = await _context.Holdings
-            .Where(x => x.User.Email == user.Email)
+            .Where(x => x.User.Id == user.Id)
             .Select(x => HoldingToDTO(x))
             .ToListAsync();
             return holdingsDTOs;
@@ -33,7 +34,7 @@ namespace FantasyStockTracker.Application
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _usersApp.GetCurrentUsername());
             var holding = await _context.Holdings
-            .Where(x => x.User.Email == user.Email)
+            .Where(x => x.User.Id == user.Id)
             .FirstOrDefaultAsync(x => x.Id == id);
 
             if (holding == null) return null;
