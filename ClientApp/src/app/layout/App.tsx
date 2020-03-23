@@ -19,6 +19,7 @@ const App = () => {
   let [selectedHolding, setSelectedHolding] = useState<IHolding | null>(null);
   let [spinning, setSpinning] = useState<boolean>(true);
   let [user, setUser] = useState<IUser | null>(null);
+  let [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     let tempUser: IUser = JSON.parse(localStorage.getItem('user')!);
@@ -42,7 +43,7 @@ const App = () => {
     else {
       setSpinning(false);
     }
-  }, []);
+  }, [loggedIn]);
 
   const handleDeleteHolding = (id: string) => {
     return new Promise(function (resolve, reject) {
@@ -93,7 +94,7 @@ const App = () => {
             />
           }
           <Route exact path='/login'
-            render={(props) => <LoginForm  {...props} setUser={setUser} />} />
+            render={(props) => <LoginForm  {...props} setUser={setUser} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
           <Route exact path='/register'
             render={(props) => <RegisterForm  {...props} setUser={setUser} />} />
           <Route component={NotFound} />

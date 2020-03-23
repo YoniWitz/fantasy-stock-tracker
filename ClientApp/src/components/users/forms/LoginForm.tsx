@@ -6,12 +6,13 @@ import { history } from '../../../index';
 
 interface IProps {
     setUser: (user: IUser) => void;
+    loggedIn : boolean;
+    setLoggedIn :(loggedIn: boolean) => void;
 }
-export const LoginForm: React.FC<IProps> = ({ setUser }) => {
+export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) => {
     let [loginUser, setLoginUser] = useState<ILoginUser>({ email: '', password: '' });
     let [spinning, setSpinning] = useState<boolean>(false);
     let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
-    let [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
         if (loggedIn) history.push('/');
