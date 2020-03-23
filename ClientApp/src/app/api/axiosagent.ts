@@ -4,7 +4,7 @@ import { ILoginUser, IRegisterUser, IUser } from '../models/IUsers';
 import { history } from '../../index';
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = 'http://localhost:5002/api/';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 let localStorageUser: IUser;
 
 axios.interceptors.request.use(config => {
