@@ -6,7 +6,7 @@ import { Container } from "react-bootstrap";
 import { HoldingDashboard } from '../../components/holdings/dashboard/HoldingDashboard'
 import axiosagent from "../api/axiosagent";
 import { Spinning } from "./Spinning";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { HomePage } from "../../components/home/HomePage";
 import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
@@ -81,13 +81,15 @@ const App = () => {
             render={(props) => <HomePage {...props} user={user} />} />
           {spinning ? <Spinning content='Loading Holdings' /> :
             <Route path='/holdings' render=
-              {() =>
+              {() => user ?
                 <HoldingDashboard
                   handleDeleteHolding={handleDeleteHolding}
                   selectedHolding={selectedHolding}
                   setSelectedHolding={setSelectedHolding}
                   handleEditSubmit={handleEditSubmit}
-                  holdings={holdings} />}
+                  holdings={holdings} />
+                :
+                <Redirect to={'/'} />}
             />
           }
           <Route exact path='/login'
