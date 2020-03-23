@@ -20,7 +20,7 @@ axios.interceptors.response.use(undefined, (error) => {
         toast.error('Network error - make sure API is running!', { autoClose: false })
     }
     else {
-        const { status, config, data, statusText } = error.response;
+        const { status, config, data, statusText, headers } = error.response;
         if (status === 404 && !localStorageUser) {
             toast.error('Username and password not found');
         }
@@ -40,8 +40,11 @@ axios.interceptors.response.use(undefined, (error) => {
             toast.error('Server error - check terminal for more info');
         }
         else if (status === 401) {
-            history.push('/');
-            toast.error('Please login first');
+            if (headers['www-authenticate'].includes('Bearer error="invalid_token", error_description="The token expired')){
+                window.localStorage.removeItem('user');
+                window.location.reload();
+                toast.error('Session expired, Please Login Again');
+            }
         }
     }
     throw error.response;
