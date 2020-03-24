@@ -181,7 +181,7 @@ ClientBin/
 *.publishsettings
 orleans.codegen.cs
 .DS_Store
-appsettings.json
+appsettings
 *.db
 
 /node_modules
