@@ -1,33 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Spinner } from 'react-bootstrap'
+import { useFormik } from 'formik';
 import { ILoginUser, IUser } from '../../../app/models/IUsers';
-import axiosagent from '../../../app/api/axiosagent'
+import axiosagent from '../../../app/api/axiosagent';
 import { history } from '../../../index';
 
 interface IProps {
     setUser: (user: IUser) => void;
-    loggedIn : boolean;
-    setLoggedIn :(loggedIn: boolean) => void;
+    loggedIn: boolean;
+    setLoggedIn: (loggedIn: boolean) => void;
 }
+
 export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) => {
-    let [loginUser, setLoginUser] = useState<ILoginUser>({ email: '', password: '' });
     let [spinning, setSpinning] = useState<boolean>(false);
-    let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
+    let initialValues: ILoginUser = { email: '', password: '' };
 
     useEffect(() => {
         if (loggedIn) history.push('/');
+    }, [loggedIn]);
 
-        let isEmailInvalid = loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? false : true;
-        setSubmitDisabled(loginUser.password.length < 6 || isEmailInvalid);
-    }, [loginUser, loggedIn]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let { name, value } = e.target;
-        setLoginUser({ ...loginUser, [name]: value });
-    }
-
-    const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
+    const handleLogin = (loginUser: ILoginUser) => {
         setSpinning(true);
         axiosagent.UsersRequests.login(loginUser)
             .then((response: IUser) => {
@@ -39,24 +31,40 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
             .finally(() => setSpinning(false));
     }
 
-    const clearForm = () => {
-        setLoginUser({
-            email: '',
-            password: ''
-        })
-    }
+    const formik = useFormik({
+        initialValues: initialValues,
+        onSubmit: (values, actions) => {
+            actions.resetForm();
+            handleLogin(values);
+        }
+    });
+
     return (
-        <Form>
+        <Form onSubmit={formik.handleSubmit}>
             <Form.Group>
                 <Form.Label>Email</Form.Label>
-                <Form.Control required type="email" placeholder="Enter Email" name="email" onChange={handleChange} value={loginUser.email} />
-                <div className="text-danger">{loginUser.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? null : "Must enter valid email"}</div>
+                <Form.Control
+                    placeholder="Enter Email"
+                    name="email"
+                    type="email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                />
+                {(formik.touched.email && formik.errors.email) && <div className="text-danger">{formik.errors.email}</div>}
             </Form.Group>
 
             <Form.Group>
                 <Form.Label>Password</Form.Label>
-                <Form.Control required type="password" placeholder="Enter Password" name="password" onChange={handleChange} value={loginUser.password} />
-                <div className="text-danger">{loginUser.password.length < 6 ? "Password must contain 6 characters at least" : null} </div>
+                <Form.Control
+                    placeholder="Enter Password"
+                    name="password"
+                    type="password"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                />
+                {(formik.touched.password && formik.errors.password) && <div className="text-danger">{formik.errors.password}</div>}
             </Form.Group>
             {spinning ?
                 <div className="d-flex justify-content-center">
@@ -70,10 +78,10 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
                 </div>
                 :
                 <div className="mb-2">
-                    <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleLogin} disabled={submitDisabled}>
+                    <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg">
                         Login
                     </Button>{' '}
-                    <Button style={{ float: 'right' }} variant="secondary" size="lg" onClick={clearForm}>
+                    <Button style={{ float: 'right' }} variant="secondary" size="lg" onClick={() => formik.resetForm()}>
                         Clear Form
                     </Button>
                 </div>

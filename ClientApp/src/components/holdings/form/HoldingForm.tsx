@@ -3,6 +3,7 @@ import { Form, Button, Spinner } from "react-bootstrap";
 import { IHolding } from "../../../app/models/IHolding";
 import { v4 as uuid } from 'uuid';
 import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 
 interface IProps {
   onCancelForm: (isAlive: boolean) => void;
@@ -10,7 +11,9 @@ interface IProps {
   handleSubmit: (holding: IHolding) => Promise<unknown>;
   setSelectedHolding: (holding: IHolding) => void;
 }
+
 export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handleSubmit, setSelectedHolding }) => {
+  
   const initHolding = () => {
     if (formHolding)
       return formHolding;
@@ -22,22 +25,13 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
     }
   }
 
-  let [holding, setHolding] = useState<IHolding>(initHolding);
   let [spinning, setSpinning] = useState<boolean>(false);
-  let [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
 
-  useEffect(() => {
-     setSubmitDisabled(holding.name.length < 1);
-  }, [holding])
+  // useEffect(() => {
+    
+  // }, [holding])
 
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let { name, value } = event.currentTarget;
-    setHolding({ ...holding, [name]: value });
-  }
-
-  const handleFormSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const handleFormSubmit = (holding:IHolding) => {
     setSpinning(true);
     if (holding.id.length === 0) holding.id = uuid();
     handleSubmit(holding)
@@ -50,12 +44,27 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
       .finally(() => setSpinning(false));
   }
 
+  const formik = useFormik({
+    initialValues: initHolding(),
+    onSubmit: (values, actions) => {
+        actions.resetForm();
+        handleFormSubmit(values);
+    }
+});
+
   return (
-    <Form className="border border-primary">
+    <Form className="border border-primary" onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Label>Name</Form.Label>
-        <Form.Control required type="text" placeholder="Enter Name" name="name" onChange={handleInputChange} value={holding.name} />
-        <div className="text-danger">{holding.name.length < 1 ? "Must enter a name" : null}</div>
+        <Form.Control        
+         placeholder="Enter Name" 
+         name="name" 
+         type="text" 
+         onChange={formik.handleChange}
+         onBlur={formik.handleBlur}
+         value={formik.values.name} 
+        />
+        {(formik.touched.name && formik.errors.name) && <div className="text-danger">{formik.errors.name}</div>}
       </Form.Group>
       {spinning ?
         <div className="d-flex justify-content-center">
@@ -69,11 +78,11 @@ export const HoldingForm: React.FC<IProps> = ({ onCancelForm, formHolding, handl
         </div>
         :
         <div className="mb-2">
-          <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg" onClick={handleFormSubmit} disabled={submitDisabled}>
+          <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg">
             Submit
         </Button>{' '}
-          <Button onClick={() => onCancelForm(false)} style={{ float: 'right' }} variant="secondary" size="lg">
-            Cancel
+          <Button onClick={() => formik.resetForm()} style={{ float: 'right' }} variant="secondary" size="lg">
+            Clear Form
         </Button>
         </div>
       }
