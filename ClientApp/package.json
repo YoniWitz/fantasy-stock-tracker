@@ -12,6 +12,7 @@
     "@types/uuid": "^7.0.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "formik": "^2.1.4",
     "jquery": "^3.4.1",
     "merge": "^1.2.1",
     "oidc-client": "^1.10.1",
