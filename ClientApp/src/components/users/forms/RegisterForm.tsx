@@ -4,10 +4,18 @@ import { IRegisterUser, IUser } from '../../../app/models/IUsers';
 import axiosagent from '../../../app/api/axiosagent';
 import { history } from '../../../index';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 interface IProps {
     setUser: (user: IUser) => void;
 }
+
+const reviewSchema = yup.object({
+    displayName: yup.string().required().min(1),
+    // userName: yup.string().required().min(1),
+    email: yup.string().required().email(),
+    password: yup.string().required().min(8),
+})
 
 export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
     let [spinning, setSpinning] = useState<boolean>(false);
@@ -19,13 +27,14 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
         if (loggedIn) history.push('/');
     }, [loggedIn]);
 
-    const handleRegistration = (registerUser:IRegisterUser) => {
+    const handleRegistration = (registerUser: IRegisterUser) => {
         setSpinning(true);
         axiosagent.UsersRequests.register(registerUser)
             .then((response: IUser) => {
                 setUser(response);
                 localStorage.setItem('user', JSON.stringify(response));
                 setLoggedIn(true);
+                formik.resetForm();
             })
             .catch(err => console.log(err))
             .finally(() => setSpinning(false));
@@ -34,16 +43,18 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit: (values, actions) => {
-            actions.resetForm();
+            values.userName = values.displayName.replace(/\s/g, '');
             handleRegistration(values);
-        }
+        },
+        validationSchema: reviewSchema
     });
 
     return (
         <Form onSubmit={formik.handleSubmit}>
-            <Form.Group>
+            {/* <Form.Group>
                 <Form.Label>User Name</Form.Label>
                 <Form.Control
+                    required
                     placeholder="Enter User Name"
                     name="userName"
                     type="text"
@@ -51,9 +62,8 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
                     onBlur={formik.handleBlur}
                     value={formik.values.userName}
                 />
-                {(formik.touched.userName && formik.errors.userName) && <div className="text-danger">{formik.errors.userName} </div>}
-            </Form.Group>
-
+                {(formik.touched.userName && formik.errors.userName) && <div className="text-danger">Full Name is Required </div>}
+            </Form.Group> */}
             <Form.Group>
                 <Form.Label>Display Name</Form.Label>
                 <Form.Control
@@ -64,12 +74,12 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
                     onBlur={formik.handleBlur}
                     value={formik.values.displayName}
                 />
-                {(formik.touched.displayName && formik.errors.displayName) && <div className="text-danger">{formik.errors.displayName} </div>}
+                {(formik.touched.displayName && formik.errors.displayName) && <div className="text-danger">Full Name is Required </div>}
             </Form.Group>
-
             <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control
+                    required
                     placeholder="Enter Email"
                     name="email"
                     type="email"
@@ -78,10 +88,10 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
                     value={formik.values.email} />
                 {(formik.touched.email && formik.errors.email) && <div className="text-danger">{formik.errors.email} </div>}
             </Form.Group>
-
             <Form.Group>
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                    required
                     placeholder="Enter Password"
                     name="password"
                     type="password"

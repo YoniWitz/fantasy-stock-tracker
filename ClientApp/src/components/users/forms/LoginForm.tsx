@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Spinner } from 'react-bootstrap'
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { ILoginUser, IUser } from '../../../app/models/IUsers';
 import axiosagent from '../../../app/api/axiosagent';
 import { history } from '../../../index';
@@ -10,6 +11,11 @@ interface IProps {
     loggedIn: boolean;
     setLoggedIn: (loggedIn: boolean) => void;
 }
+
+const reviewSchema = yup.object({
+    email: yup.string().required().email(),
+    password: yup.string().required().min(8),
+})
 
 export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) => {
     let [spinning, setSpinning] = useState<boolean>(false);
@@ -26,6 +32,7 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
                 setUser(response);
                 localStorage.setItem('user', JSON.stringify(response));
                 setLoggedIn(true);
+                formik.resetForm();
             })
             .catch(err => console.log(err))
             .finally(() => setSpinning(false));
@@ -34,9 +41,9 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit: (values, actions) => {
-            actions.resetForm();
-            handleLogin(values);
-        }
+            handleLogin(values);     
+        },
+        validationSchema: reviewSchema
     });
 
     return (
