@@ -30,9 +30,14 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
               <Button variant="primary" onClick={() => setShowModal(true)}>
                 Create Holding
             </Button>
-              <Modal show={showModal} size="sm" onHide={() => setShowModal(false)}
+              <Modal
+                show={showModal}
+                size="sm"
+                onHide={() => setShowModal(false)}
                 aria-labelledby="example-modal-sizes-title-sm"
-                centered>
+                centered
+                keyboard
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>Create new Holding</Modal.Title>
                 </Modal.Header>
@@ -43,7 +48,7 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
         }
         <Nav className="justify-content-end">
           <Navbar.Text>Hello {user ? user.displayName : 'Guest'} {'    '}</Navbar.Text>
-          {user ? <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link> :  <Nav.Link as={Button} href="/register">Register</Nav.Link>}
+          {user ? <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link> : <> <Nav.Link as={Button} href="/register">Register</Nav.Link><Nav.Link as={Button} href="/login">Login</Nav.Link></>}
         </Nav>
       </Container>
     </Navbar>
