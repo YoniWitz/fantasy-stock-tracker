@@ -22,7 +22,7 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
   return (
     <Navbar sticky="top">
       <Container>
-        <Navbar.Brand href="/">Fantasy Stock Tracker</Navbar.Brand>
+        <Navbar.Brand style={{fontStyle:'oblique', fontSize:'large', color:'white'}} href="/">Fantasy Stock Tracker</Navbar.Brand>
         {user &&
           <Nav className="mr-auto">
             <Nav.Link href="/holdings">Holdings</Nav.Link>

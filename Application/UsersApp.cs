@@ -31,17 +31,20 @@ namespace FantasyStockTracker.Application
         public async Task<UserDTO> Login(UserLoginDTO userLoginDTO)
         {
             var user = await _userManager.FindByEmailAsync(userLoginDTO.Email);
-
-            var userResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
-
-            if (userResult.Succeeded)
+            
+            if (user != null)
             {
-                return new UserDTO
+                var userResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
+
+                if (userResult.Succeeded)
                 {
-                    DisplayName = user.DisplayName,
-                    Token = _jwtGenerator.CreateToken(user),
-                    UserName = user.UserName
-                };
+                    return new UserDTO
+                    {
+                        DisplayName = user.DisplayName,
+                        Token = _jwtGenerator.CreateToken(user),
+                        UserName = user.UserName
+                    };
+                }
             }
             return null;
         }
