@@ -4,7 +4,7 @@ Allows user to trade stocks on the stock market with fantasy money. Written in .
 
 ## You can use it [here](https://ywfantasystocktracker.azurewebsites.net/)
 
-<image src="client/src/assets/twitter_showcase_snapshot.png">
+<image src="ClientApp/assets/twitter_showcase_snapshot.png">
 
 ## Summary
 3.19.20
