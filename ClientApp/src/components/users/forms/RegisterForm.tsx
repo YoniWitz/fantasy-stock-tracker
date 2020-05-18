@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Button, Spinner } from 'react-bootstrap';
 import { IRegisterUser, IUser } from '../../../app/models/IUsers';
 import axiosagent from '../../../app/api/axiosagent';
 import { history } from '../../../index';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { toast } from 'react-toastify';
+
 
 interface IProps {
     setUser: (user: IUser) => void;
 }
 
 const reviewSchema = yup.object({
-    displayName: yup.string().required().min(1),
-    // userName: yup.string().required().min(1),
-    email: yup.string().required().email(),
-    password: yup.string().required().min(8),
+    email: yup.string().required('Email address is required').email(),
+    password: yup.string().required('Password is required').min(8),
+    userName: yup.string().required('User Name is required')
+        .test('noSpaces', 'No spaces allowed for User name', (val: string) => {
+            if (val)
+                return !val.includes(' ')
+            return false
+        }),
+
 })
 
 export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
@@ -28,98 +35,99 @@ export const RegisterForm: React.FC<IProps> = ({ setUser }) => {
     }, [loggedIn]);
 
     const handleRegistration = (registerUser: IRegisterUser) => {
+        toast.dismiss();
         setSpinning(true);
         axiosagent.UsersRequests.register(registerUser)
             .then((response: IUser) => {
                 setUser(response);
                 localStorage.setItem('user', JSON.stringify(response));
-                setLoggedIn(true);
+                setSpinning(false);
                 formik.resetForm();
+                setLoggedIn(true);
             })
-            .catch(err => console.log(err))
-            .finally(() => setSpinning(false));
+            .catch(err => {
+                console.log(err);
+                setSpinning(false);
+            })
     }
 
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit: (values, actions) => {
-            values.userName = values.displayName.replace(/\s/g, '');
+            values.displayName = values.userName;
             handleRegistration(values);
         },
         validationSchema: reviewSchema
     });
 
     return (
-        <Form onSubmit={formik.handleSubmit}>
-            {/* <Form.Group>
-                <Form.Label>User Name</Form.Label>
-                <Form.Control
-                    required
-                    placeholder="Enter User Name"
-                    name="userName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.userName}
-                />
-                {(formik.touched.userName && formik.errors.userName) && <div className="text-danger">Full Name is Required </div>}
-            </Form.Group> */}
-            <Form.Group>
-                <Form.Label>Display Name</Form.Label>
-                <Form.Control
-                    placeholder="Enter Display Name"
-                    name="displayName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.displayName}
-                />
-                {(formik.touched.displayName && formik.errors.displayName) && <div className="text-danger">Full Name is Required </div>}
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                    required
-                    placeholder="Enter Email"
-                    name="email"
-                    type="email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email} />
-                {(formik.touched.email && formik.errors.email) && <div className="text-danger">{formik.errors.email} </div>}
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                    required
-                    placeholder="Enter Password"
-                    name="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password} />
-                {(formik.touched.password && formik.errors.password) && <div className="text-danger">{formik.errors.password} </div>}
-            </Form.Group>
-            {spinning ?
-                <div className="d-flex justify-content-center">
-                    <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
+        <Fragment>
+            <Form onSubmit={formik.handleSubmit}>
+                <Form.Group>
+                    <Form.Label>User Name</Form.Label>
+                    <Form.Control
+                        placeholder="Enter User Name"
+                        name="userName"
+                        type="text"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.userName}
                     />
-                </div>
-                :
-                <div className="mb-2">
-                    <Button style={{ float: 'right' }} type='submit' variant="primary" size="lg"  >
-                        Register
-                    </Button>{' '}
-                    <Button style={{ float: 'right' }} variant="secondary" size="lg" onClick={() => formik.resetForm()}>
-                        Clear Form
-                    </Button>
-                </div>
-            }
-        </Form>
+                    <Form.Text className="text-danger">{formik.touched.userName && formik.errors.userName}</Form.Text>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        placeholder="Enter Email"
+                        name="email"
+                        type="email"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email} />
+                    <Form.Text className="text-danger">{formik.touched.email && formik.errors.email} </Form.Text>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        placeholder="Enter Password"
+                        name="password"
+                        type="password"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.password} />
+                    <Form.Text className="text-danger">{formik.touched.password && formik.errors.password} </Form.Text>
+                </Form.Group>
+                {spinning ?
+                    <div className="d-flex justify-content-center">
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    </div>
+                    :
+                    <div className="mb-2">
+                        <Button
+                            style={{ float: 'right' }}
+                            type='submit'
+                            variant="primary"
+                            size="lg"
+                        >
+                            Register
+                        </Button>{' '}
+                        <Button
+                            style={{ float: 'right' }}
+                            variant="secondary"
+                            size="lg"
+                            onClick={() => { formik.resetForm(); toast.dismiss(); }}>
+                            Clear Form
+                        </Button>
+                    </div>
+                }
+            </Form>
+        </Fragment>
     )
 }

@@ -11,7 +11,7 @@ import { HomePage } from "../../components/home/HomePage";
 import { LoginForm } from "../../components/users/forms/LoginForm";
 import { IUser } from "../models/IUsers";
 import NotFound from "./NotFound";
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { RegisterForm } from "../../components/users/forms/RegisterForm"
 
 const App = () => {

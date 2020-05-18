@@ -31,21 +31,21 @@ namespace FantasyStockTracker.Application
         public async Task<UserDTO> Login(UserLoginDTO userLoginDTO)
         {
             var user = await _userManager.FindByEmailAsync(userLoginDTO.Email);
-            
-            if (user != null)
-            {
-                var userResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
 
-                if (userResult.Succeeded)
+            if(user == null) return null;
+            
+            var userResult = await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
+
+            if (userResult.Succeeded)
+            {
+                return new UserDTO
                 {
-                    return new UserDTO
-                    {
-                        DisplayName = user.DisplayName,
-                        Token = _jwtGenerator.CreateToken(user),
-                        UserName = user.UserName
-                    };
-                }
+                    DisplayName = user.DisplayName,
+                    Token = _jwtGenerator.CreateToken(user),
+                    UserName = user.UserName
+                };
             }
+
             return null;
         }
 
@@ -55,6 +55,10 @@ namespace FantasyStockTracker.Application
             if (await _context.Users.Where(x => x.Email == userRegisterDTO.Email).AnyAsync())
             {
                 userDTO.Message.Add("Email already exists in system");
+            }
+            if (await _context.Users.Where(x => x.UserName == userRegisterDTO.UserName).AnyAsync())
+            {
+                userDTO.Message.Add("User Name already exists in system");
             }
 
             var newUser = new User

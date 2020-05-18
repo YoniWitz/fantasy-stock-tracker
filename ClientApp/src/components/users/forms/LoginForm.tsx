@@ -22,7 +22,7 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
     let initialValues: ILoginUser = { email: '', password: '' };
 
     useEffect(() => {
-        if (loggedIn) history.push('/');
+         if (loggedIn) history.push('/');
     }, [loggedIn]);
 
     const handleLogin = (loginUser: ILoginUser) => {
@@ -31,17 +31,20 @@ export const LoginForm: React.FC<IProps> = ({ setUser, loggedIn, setLoggedIn }) 
             .then((response: IUser) => {
                 setUser(response);
                 localStorage.setItem('user', JSON.stringify(response));
-                setLoggedIn(true);
+                setSpinning(false)
                 formik.resetForm();
+                setLoggedIn(true);
             })
-            .catch(err => console.log(err))
-            .finally(() => setSpinning(false));
+            .catch(err => {
+                console.log(err);
+                setSpinning(false);
+            })
     }
 
     const formik = useFormik({
         initialValues: initialValues,
         onSubmit: (values, actions) => {
-            handleLogin(values);     
+            handleLogin(values);
         },
         validationSchema: reviewSchema
     });

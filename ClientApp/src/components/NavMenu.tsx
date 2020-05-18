@@ -4,6 +4,7 @@ import { HoldingForm } from './holdings/form/HoldingForm';
 import { IHolding } from '../app/models/IHolding';
 import { IUser } from '../app/models/IUsers';
 import { history } from '../index';
+import { useLocation } from 'react-router-dom';
 
 interface IProps {
   user: IUser | null;
@@ -12,6 +13,7 @@ interface IProps {
   setSelectedHolding: (holding: IHolding) => void;
 }
 export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHolding, user, setUser }) => {
+  let location = useLocation();
   let [showModal, setShowModal] = useState<boolean>(false);
 
   const logout = () => {
@@ -47,8 +49,8 @@ export const NavMenu: React.FC<IProps> = ({ handleCreateSubmit, setSelectedHoldi
           </Nav>
         }
         <Nav className="justify-content-end">
-          <Navbar.Text>Hello {user ? user.displayName : 'Guest'} {'    '}</Navbar.Text>
-          {user ? <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link> : <> <Nav.Link as={Button} href="/register">Register</Nav.Link><Nav.Link as={Button} href="/login">Login</Nav.Link></>}
+          <Navbar.Text>Hello {user ? user.userName : 'Guest'} {'    '}</Navbar.Text>
+           {user ? <Nav.Link as={Button} onClick={logout}>Logout</Nav.Link> : location.pathname === '/register' ?  <Nav.Link as={Button} href="/login">Login</Nav.Link> : <Nav.Link as={Button} href="/register">Register</Nav.Link>}
         </Nav>
       </Container>
     </Navbar>
