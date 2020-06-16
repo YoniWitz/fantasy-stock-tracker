@@ -2,8 +2,6 @@
 # Fantasy Stock Market
 Allows user to trade stocks on the stock market with fantasy money. Written in .NET Core, C#, EF code first, React, Type Script
 
-## You can use it [here](https://ywfantasystocktracker.azurewebsites.net/)
-
 <image src="ClientApp/public/assets/FantasyStockTracker.png">
 
 ## Summary
