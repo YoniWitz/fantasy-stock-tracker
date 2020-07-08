@@ -41,7 +41,7 @@ namespace FantasyStockTracker
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<Persistence.DataContext>(opt =>
-               opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             ConfigureServices(services);
         }
